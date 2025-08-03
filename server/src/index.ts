@@ -7,7 +7,6 @@ const db = new Database("habits.sqlite");
 
 app.use(cors())
 
-// 2. ensure the table exists, and seed some dummy data
 db.run(`
   create table if not exists habits (
     id integer primary key autoincrement,
@@ -49,12 +48,6 @@ app.post('/habits', async (c) => {
     'INSERT INTO habits (name, description) VALUES (?, ?)',
     [name, description]
   )
-
-  const [{ id }] = [
-    ...db.query<{ id: number }>(
-      'SELECT last_insert_rowid() AS id'
-    )
-  ]
 
   return c.json(
     { success: true, data: { id, name, description } },
