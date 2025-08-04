@@ -107,13 +107,22 @@ export default function Dashboard() {
   const addHabit = async () => {
     setHabits((prev) => [...prev, {
       id: habits.length + 1,
-      name: "test",
-      description: 'Read 15 pages',
-      color: '#111827',
-      icon: '📚',
-      completedToday: false,
+      name: name,
+      description: desc,
     }])
     setShowAddModal(false)
+
+    const res = await fetch("http://localhost:3000/habits", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: name, description: desc })
+    })
+
+    if (!res.ok) {
+      console.error("Failed to add habit")
+    }
   }
 
 
@@ -161,7 +170,7 @@ export default function Dashboard() {
         </div>
       </main>
       {showAddModal && (
-        <AddHabitModal handleSubmit={addHabit} onClose={() => setShowAddModal(false)} />
+        <AddHabitModal handleSubmit={addHabit} onClose={() => setShowAddModal(false)} name={name} setName={setName} desc={desc} setDesc={setDesc} />
       )}
     </div>
   )
@@ -405,7 +414,7 @@ function ReminderItem({ time, text }: { time: string; text: string }) {
   )
 }
 
-function AddHabitModal({ onClose, handleSubmit }: { onClose: () => void, handleSubmit: () => void }) {
+function AddHabitModal({ onClose, handleSubmit, name, setName, desc, setDesc }: { onClose: () => void, handleSubmit: () => void }) {
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-4">
       <div className="w-full max-w-lg rounded-2xl bg-white shadow-xl">
@@ -434,6 +443,8 @@ function AddHabitModal({ onClose, handleSubmit }: { onClose: () => void, handleS
                 className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 placeholder="e.g. Morning Exercise"
                 required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
@@ -455,6 +466,8 @@ function AddHabitModal({ onClose, handleSubmit }: { onClose: () => void, handleS
             <input
               className="w-full rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Add some details..."
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-between">

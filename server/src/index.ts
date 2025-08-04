@@ -7,32 +7,36 @@ const db = new Database("habits.sqlite");
 
 app.use(cors())
 
+
+db.run('DROP TABLE IF EXISTS habits')
+
 db.run(`
   create table if not exists habits (
     id integer primary key autoincrement,
     name text not null,
-    description text not null
+    description text not null,
+    completed BOOLEAN DEFAULT false
   )
 `)
 
 db.run(`
-  INSERT OR IGNORE INTO habits (id, name, description) VALUES
-    (1, 'Exercise',  '30 minutes of cardio'),
-    (2, 'Meditation','10 minutes of mindfulness'),
-    (3, 'Reading',   'Read 20 pages of a book');
+  INSERT OR IGNORE INTO habits (id, name, description, completed) VALUES
+    (1, 'Exercise', '30 minutes of cardio', false),
+    (2, 'Meditation', '10 minutes of mindfulness', true),
+    (3, 'Reading', 'Read 15 pages', false)
 `)
 
 
-app.get('/', (c) => c.text('hello hono!'))
 
 app.get('/habits', (c) => {
   const rows = [
     ...db.query<{ id: number; name: string; description: string }>(
-      'SELECT id, name, description FROM habits'
+      'SELECT id, name, description, completed FROM habits'
     )
   ]
   return c.json({ success: true, data: rows })
 })
+
 app.post('/habits', async (c) => {
 
   const { name, description } = await c.req.json()
@@ -50,9 +54,23 @@ app.post('/habits', async (c) => {
   )
 
   return c.json(
-    { success: true, data: { id, name, description } },
+    { success: true, data: { name, description } },
     201
   )
+
+})
+
+app.put("/habits/:id", async (c) => {
+
+  const id: number = parseInt(c.req.param("id"));
+  const { completed }: { completed: boolean } = await c.req.json();
+
+  db.run(
+    `UPDATE habits SET completed = ? WHERE id = ?`,
+    [completed, id]
+  )
+
+  return c.json({ success: true, message: `Habit ${id} updated` })
 
 })
 
