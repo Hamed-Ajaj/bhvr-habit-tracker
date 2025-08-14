@@ -3,10 +3,12 @@ import { cors } from 'hono/cors'
 import type { ApiResponse } from 'shared/dist'
 import { Database } from "bun:sqlite";
 import { auth } from './lib/auth';
+import { todos } from './routes/todo.route';
+import { habits } from './routes/habits.route';
 const app = new Hono()
 const db = new Database("habits.sqlite");
 
-// app.use(cors())
+app.use(cors())
 
 app.use(
   "/api/auth/*", // or replace with "*" to enable cors for all routes
@@ -22,6 +24,9 @@ app.use(
 
 
 app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+
+app.route("/todos", todos)
+app.route("/habits", habits)
 
 db.run('DROP TABLE IF EXISTS habits')
 
@@ -44,11 +49,12 @@ db.run(`
 
 
 app.get('/habits', (c) => {
-  const rows = [
-    ...db.query<{ id: number; name: string; description: string }>(
-      'SELECT id, name, description, completed FROM habits'
-    )
-  ]
+  const rows = db
+    .query<
+      { id: number; name: string; description: string; completed: boolean },
+      []
+    >('SELECT id, name, description, completed FROM habits')
+    .all();
   return c.json({ success: true, data: rows })
 })
 
