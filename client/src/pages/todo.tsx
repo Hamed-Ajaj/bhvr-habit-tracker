@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Edit2, Trash2, ChevronDown } from 'lucide-react';
+import { title } from 'process';
 
 interface Todo {
   id: number;
@@ -14,6 +15,9 @@ const TodoList: React.FC = () => {
   const [filter, setFilter] = useState<'Active' | 'Completed' | 'All'>('Active');
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState('');
+
+
+  // TODO: refactor the code and separate the logic into a custom hooks
 
   const addTodo = async () => {
     if (newTodo.trim()) {
@@ -51,7 +55,8 @@ const TodoList: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          completed: 0,
+          completed: !todo.completed, // ← Toggle completed status
+          title: todo.title, // ← Keep the title unchanged
         }),
       });
 
@@ -79,13 +84,15 @@ const TodoList: React.FC = () => {
     }
   };
 
-  const startEdit = (id: number, title: string) => { // ← Use "title" not "text"
+  const startEdit = (id: number, title: string) => {
     setEditingId(id);
     setEditText(title);
   };
 
   const saveEdit = async () => {
+    const todo = todos.find(t => t.id === editingId);
     if (editText.trim() && editingId) {
+
       try {
         const response = await fetch(`http://localhost:3000/todos/${editingId}`, {
           method: 'PUT',
@@ -94,6 +101,7 @@ const TodoList: React.FC = () => {
           },
           body: JSON.stringify({
             title: editText.trim(),
+            completed: todo ? todo.completed : false, // ← Keep the completed status unchanged
           }),
         });
 
@@ -121,6 +129,7 @@ const TodoList: React.FC = () => {
     return true;
   });
 
+  const completedTodos = todos.filter(todo => todo.completed);
   const activeCount = todos.filter(todo => !todo.completed).length;
 
   const fetchTodos = async () => {
@@ -129,8 +138,6 @@ const TodoList: React.FC = () => {
       const res = await fetch('http://localhost:3000/todos');
       const response = await res.json();
 
-
-      console.log('Fetched todos:', response); // Debugging line
       if (response.success && response.todos) {
         setTodos(response.todos); // ← Adjust based on your API structure
       } else if (Array.isArray(response)) {
@@ -147,9 +154,6 @@ const TodoList: React.FC = () => {
     fetchTodos();
   }, []);
 
-  if (loading) {
-    return <p>loading...</p>
-  }
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white">
@@ -171,13 +175,14 @@ const TodoList: React.FC = () => {
         />
         <button
           onClick={addTodo}
-          className="px-4 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+          className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Plus size={20} />
         </button>
       </div>
 
       {/* Filter and Count */}
+
       <div className="flex justify-between items-center mb-6">
         <div className="relative">
           <select
@@ -191,7 +196,7 @@ const TodoList: React.FC = () => {
           </select>
           <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
         </div>
-        <span className="text-gray-600">Count: {filteredTodos.length}</span>
+        <span className="text-gray-600">Tasks: {filteredTodos.length}</span>
       </div>
 
       {/* Section Title */}
@@ -266,9 +271,12 @@ const TodoList: React.FC = () => {
           </div>
         ))}
 
+        {/* completed tasks */}
+
+
         {filteredTodos.length === 0 && (
           <div className="text-center py-8 text-gray-500">
-            No {filter.toLowerCase()} tasks found
+            No tasks found
           </div>
         )}
       </div>

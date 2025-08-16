@@ -10,6 +10,8 @@ db.run(`
   )
 `);
 
+// TODO: add tags columns
+
 // Create todos table
 db.run(`
   CREATE TABLE IF NOT EXISTS todos (

@@ -25,11 +25,12 @@ todos.post("/", async (c) => {
 
 todos.put("/:id", async (c) => {
   const { id } = c.req.param();
-  db.run("UPDATE todos SET completed = CASE WHEN completed = 0 THEN 1 ELSE 0 END WHERE id = ?",
-    [id],);
+  const { completed, title } = await c.req.json();
+  db.run("UPDATE todos SET completed = ? , title= ? WHERE id = ?",
+    [completed, title, id],);
   return c.json({ success: true, message: "Todo updated successfully" });
-
 })
+
 
 todos.delete("/:id", async (c) => {
   const { id } = c.req.param();
