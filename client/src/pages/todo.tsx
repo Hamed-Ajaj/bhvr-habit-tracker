@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Edit2, Trash2, ChevronDown } from 'lucide-react';
 import { title } from 'process';
+import { useTodos } from '@/hooks/useTodos';
+import { useAddTodo } from '@/hooks/useAddTodo';
+import { useDeleteTodo } from '@/hooks/useDeleteTodo';
+import { useUpdateTodo } from '@/hooks/useUpdateTodo';
 
 interface Todo {
   id: number;
@@ -10,33 +14,24 @@ interface Todo {
 
 const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]); // ← Initialize as empty array, not undefined
-  const [loading, setLoading] = useState<boolean>(true);
   const [newTodo, setNewTodo] = useState('');
   const [filter, setFilter] = useState<'Active' | 'Completed' | 'All'>('Active');
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState('');
 
+  const { todos: tanstackTodos, isFetching, error, isError } = useTodos(); // ← Use the custom hook to fetch todos
+  console.log('tanstackTodos', tanstackTodos);
+  const tanstackAddTodo = useAddTodo();
+  const tanstackDeleteTodo = useDeleteTodo();
+  const tanstackUpdateTodo = useUpdateTodo();
 
   // TODO: refactor the code and separate the logic into a custom hooks
 
   const addTodo = async () => {
     if (newTodo.trim()) {
       try {
-        const response = await fetch('http://localhost:3000/todos', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            title: newTodo.trim(), // ← Use "title" not "text"
-            completed: 0, // ← Default to false
-          }),
-        });
-
-        if (response.ok) {
-          // Refetch todos or add to local state
-          fetchTodos();
-        }
+        const todo = await tanstackAddTodo.mutateAsync(newTodo.trim());
+        console.log('New todo added:', todo);
       } catch (error) {
         console.error('Error adding todo:', error);
       }
@@ -44,10 +39,10 @@ const TodoList: React.FC = () => {
     }
   };
 
-  const toggleTodo = async (id: number) => {
-    const todo = todos.find(t => t.id === id);
-    if (!todo) return;
-
+  const toggleTodo = async (id: number, title: string, completed: boolean) => {
+    // const todo = tanstackAddTodo?.todos?.find(t => t.id === id);
+    // if (!todo) return;
+    console.log('toggleTodo', id, title, completed);
     try {
       const response = await fetch(`http://localhost:3000/todos/${id}`, {
         method: 'PUT',
@@ -55,8 +50,8 @@ const TodoList: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          completed: !todo.completed, // ← Toggle completed status
-          title: todo.title, // ← Keep the title unchanged
+          completed: completed ? 0 : 1, // ← Toggle completed status
+          title: title, // ← Keep the title unchanged
         }),
       });
 
@@ -65,6 +60,8 @@ const TodoList: React.FC = () => {
           todo.id === id ? { ...todo, completed: !! !todo.completed } : todo
         ));
       }
+      // const updatedTodo = await tanstackUpdateTodo.mutateAsync({ id, title: title, completed: completed });
+      // console.log('Todo updated:', updatedTodo);
     } catch (error) {
       console.error('Error updating todo:', error);
     }
@@ -72,13 +69,8 @@ const TodoList: React.FC = () => {
 
   const deleteTodo = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:3000/todos/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (response.ok) {
-        setTodos(todos.filter(todo => todo.id !== id));
-      }
+      const deletedTodo = await tanstackDeleteTodo.mutateAsync(id);
+      console.log('Todo deleted:', deletedTodo);
     } catch (error) {
       console.error('Error deleting todo:', error);
     }
@@ -123,38 +115,13 @@ const TodoList: React.FC = () => {
     setEditText('');
   };
 
-  const filteredTodos = todos.filter(todo => {
+  const filteredTodos = tanstackTodos?.todos?.filter(todo => {
     if (filter === 'Active') return !todo.completed;
     if (filter === 'Completed') return todo.completed;
     return true;
   });
 
-  const completedTodos = todos.filter(todo => todo.completed);
-  const activeCount = todos.filter(todo => !todo.completed).length;
-
-  const fetchTodos = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch('http://localhost:3000/todos');
-      const response = await res.json();
-
-      if (response.success && response.todos) {
-        setTodos(response.todos); // ← Adjust based on your API structure
-      } else if (Array.isArray(response)) {
-        setTodos(response);
-      }
-      setLoading(false);
-    } catch (error) {
-      setTodos([]); // ← Fallback to empty array
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTodos();
-  }, []);
-
-
+  if (isFetching) <h1>loading</h1>
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white">
       {/* Header */}
@@ -196,7 +163,7 @@ const TodoList: React.FC = () => {
           </select>
           <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
         </div>
-        <span className="text-gray-600">Tasks: {filteredTodos.length}</span>
+        <span className="text-gray-600">Tasks: {filteredTodos?.length}</span>
       </div>
 
       {/* Section Title */}
@@ -206,14 +173,14 @@ const TodoList: React.FC = () => {
 
       {/* Todo List */}
       <div className="space-y-3">
-        {filteredTodos.map(todo => (
+        {isFetching ? <h1>loading</h1> : (filteredTodos?.map(todo => (
           <div
             key={todo.id}
             className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200"
           >
             {/* Checkbox */}
             <button
-              onClick={() => toggleTodo(todo.id)}
+              onClick={() => toggleTodo(todo.id, todo.title, !todo.completed)}
               className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${todo.completed
                 ? 'bg-blue-500 border-blue-500 text-white'
                 : 'border-gray-300 hover:border-blue-400'
@@ -269,12 +236,12 @@ const TodoList: React.FC = () => {
               </button>
             </div>
           </div>
-        ))}
+        )))}
 
         {/* completed tasks */}
+        {(isError && error) && (<h1>there is an error</h1>)}
 
-
-        {filteredTodos.length === 0 && (
+        {filteredTodos?.length === 0 && (
           <div className="text-center py-8 text-gray-500">
             No tasks found
           </div>
