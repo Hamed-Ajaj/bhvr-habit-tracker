@@ -1,6 +1,6 @@
 const HabitsPage = () => {
   return (
-    <div>habits page</div>
+    <h1>HabitsPage</h1>
   )
 }
 

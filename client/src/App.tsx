@@ -5,6 +5,7 @@ import AuthPage from './pages/auth/auth-page'
 import { Sidebar, SidebarProvider, SidebarTrigger } from './components/ui/sidebar.tsx';
 import { AppSidebar } from './components/app-sidebar.tsx';
 import HabitsPage from './pages/habits.tsx';
+import FocusPage from './pages/focus.tsx';
 // const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
 // Layout that includes the sidebar
 function SidebarLayout() {
@@ -29,7 +30,7 @@ function App() {
       <Route element={<SidebarLayout />}>
         <Route path="/todos" element={<TodoList />} />
         <Route path="/habits" element={<HabitsPage />} />
-        <Route path="/todos" element={<TodoList />} />
+        <Route path="/focus" element={<FocusPage />} />
         <Route path="/todos" element={<TodoList />} />
         {/* You can add more sidebar routes here */}
       </Route>

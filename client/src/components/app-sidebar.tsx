@@ -35,6 +35,11 @@ const mainItems = [
     icon: CheckSquare,
   },
   {
+    title: "Focus Timer",
+    url: "/focus",
+    icon: Timer,
+  },
+  {
     title: "Habits",
     url: "/habits",
     icon: Target,
@@ -43,11 +48,6 @@ const mainItems = [
     title: "Weekly Planning",
     url: "/planning",
     icon: Calendar,
-  },
-  {
-    title: "Focus Timer",
-    url: "/focus",
-    icon: Timer,
   },
 ]
 
