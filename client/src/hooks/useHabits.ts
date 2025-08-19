@@ -1,0 +1,26 @@
+import { useQuery } from "@tanstack/react-query";
+
+interface Habit {
+  success: boolean;
+  habits: {
+    id: number;
+    name: string;
+    completed: boolean;
+    startDate: string;
+    description: string;
+    frequency: string;
+  }[]
+}
+
+const fetchHabits = async (): Promise<Habit> => {
+  const response = await fetch('http://localhost:3000/habits');
+  const data = await response.json();
+  return data;
+}
+
+
+
+export const useHabits = () => {
+  const { data: habits, isFetching, isError, error, isLoading } = useQuery({ queryKey: ['habits'], queryFn: fetchHabits })
+  return { habits, isFetching, isError, error, isLoading }
+}
