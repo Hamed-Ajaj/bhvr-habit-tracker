@@ -5,10 +5,12 @@ import { Database } from "bun:sqlite";
 import { auth } from './lib/auth';
 import { todos } from './routes/todo.route';
 import { habits } from './routes/habits.route';
+import { logger } from 'hono/logger';
 const app = new Hono()
 const db = new Database("habits.sqlite");
 
 app.use(cors())
+app.use(logger())
 
 app.use(
   "/api/auth/*", // or replace with "*" to enable cors for all routes
