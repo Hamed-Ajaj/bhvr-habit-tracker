@@ -1,21 +1,19 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import type { ApiResponse } from 'shared/dist'
 import { Database } from "bun:sqlite";
 import { auth } from './lib/auth';
 import { todos } from './routes/todo.route';
 import { habits } from './routes/habits.route';
 import { logger } from 'hono/logger';
-const app = new Hono()
-const db = new Database("habits.sqlite");
 
-app.use(cors())
+const app = new Hono()
+
 app.use(logger())
 
 app.use(
-  "/api/auth/*", // or replace with "*" to enable cors for all routes
+  "*",
   cors({
-    origin: ["http://localhost:3000", "http://localhost::5173"], // replace with your origin
+    origin: ["http://localhost:5173", "http://localhost:3000"],
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["POST", "GET", "OPTIONS"],
     exposeHeaders: ["Content-Length"],
@@ -24,11 +22,13 @@ app.use(
   }),
 );
 
+// Group all API routes under /api
+const api = new Hono();
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+api.on(["POST", "GET"], "/auth/**", (c) => auth.handler(c.req.raw));
+api.route("/todos", todos);
+api.route("/habits", habits);
 
-app.route("/todos", todos)
-app.route("/habits", habits)
+app.route("/api", api);
 
-
-export default app
+export default app;
