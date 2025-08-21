@@ -1,7 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { useHabits } from "@/hooks/useHabits";
-import { CheckCircle2, Circle } from "lucide-react";
-
+import AddHabitDialog from "@/components/ui/add-habit-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 const HabitsPage = () => {
   const { habits } = useHabits();
 
@@ -13,7 +12,7 @@ const HabitsPage = () => {
         <div><h1 className="text-3xl font-bold text-gray-900">Habits</h1>
           <p className="text-gray-600">Track your daily and weekly habits</p></div>
         <div>
-          <Button className="bg-blue-600">add habit</Button>
+          <AddHabitDialog />
         </div>
       </div>
 
@@ -27,11 +26,12 @@ const HabitsPage = () => {
             >
               {/* Left side: Habit info */}
               <div className="flex items-center gap-4">
-                {habit.completed ? (
-                  <CheckCircle2 className="w-6 h-6 text-green-500" />
-                ) : (
-                  <Circle className="w-6 h-6 text-gray-400" />
-                )}
+                {/* {habit.completed ? ( */}
+                {/*   <CheckCircle2 className="w-6 h-6 text-green-500" /> */}
+                {/* ) : ( */}
+                {/*   <Circle className="w-6 h-6 text-gray-400" /> */}
+                {/* )} */}
+                <Checkbox checked={!!habit.completed} />
                 <div>
                   <h2 className="text-lg font-semibold text-gray-900">
                     {habit.name}

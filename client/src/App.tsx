@@ -1,14 +1,25 @@
-import { Outlet, Route, Routes } from 'react-router-dom'
+import { Outlet, Route, Routes, useNavigate } from 'react-router-dom'
 import LandingPage from './pages/landing-page'
 import TodoList from './pages/todo.tsx'
-import AuthPage from './pages/auth/auth-page'
-import { Sidebar, SidebarProvider, SidebarTrigger } from './components/ui/sidebar.tsx';
+import { SidebarProvider, SidebarTrigger } from './components/ui/sidebar.tsx';
 import { AppSidebar } from './components/app-sidebar.tsx';
 import HabitsPage from './pages/habits.tsx';
 import FocusPage from './pages/focus.tsx';
+import { useSession } from './lib/auth-client.ts';
+import SignIn from './pages/auth/signIn.tsx';
+import SignUp from './pages/auth/auth-page';
+import { useEffect } from 'react';
 // const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
 // Layout that includes the sidebar
 function SidebarLayout() {
+  const { data: session } = useSession()
+  const navigate = useNavigate();
+  if (session === null) <h1>loading</h1>
+  useEffect(() => {
+    if (!session && session !== null) {
+      navigate('/sign-in')
+    }
+  }, [session, navigate])
   return (
     <SidebarProvider>
 
@@ -19,6 +30,7 @@ function SidebarLayout() {
           <Outlet /> {/* This renders the child route */}
         </div>
       </div>
+
     </SidebarProvider>
   );
 }
@@ -26,15 +38,18 @@ function App() {
 
   return (
     <Routes>
+
       <Route path="/" element={<LandingPage />} />
+      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/sign-in" element={<SignIn />} />
+
       <Route element={<SidebarLayout />}>
         <Route path="/todos" element={<TodoList />} />
         <Route path="/habits" element={<HabitsPage />} />
         <Route path="/focus" element={<FocusPage />} />
         <Route path="/todos" element={<TodoList />} />
-        {/* You can add more sidebar routes here */}
       </Route>
-      <Route path="/auth" element={<AuthPage />} />
+
     </Routes>
   )
 }

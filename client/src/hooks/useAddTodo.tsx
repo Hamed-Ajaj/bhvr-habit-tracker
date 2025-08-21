@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const addTodo = async (title: string) => {
 
-  const response = await fetch('http://localhost:3000/todos', {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/todos`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

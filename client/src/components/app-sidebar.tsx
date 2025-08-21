@@ -26,6 +26,7 @@ import {
 import { Link, useLocation } from "react-router-dom"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { signOut } from "@/lib/auth-client"
 
 // Main navigation items
 const mainItems = [
@@ -183,7 +184,7 @@ export function AppSidebar() {
                 <span>Settings</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center space-x-2 text-red-600">
+            <DropdownMenuItem className="flex items-center space-x-2 text-red-600" onClick={() => signOut()}>
               <LogOut className="w-4 h-4" />
               <span>Sign out</span>
             </DropdownMenuItem>

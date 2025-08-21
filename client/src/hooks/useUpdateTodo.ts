@@ -9,7 +9,7 @@ const updateTodo = async ({
   title: string;
   completed: boolean;
 }) => {
-  const response = await fetch(`http://localhost:3000/todos/${id}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

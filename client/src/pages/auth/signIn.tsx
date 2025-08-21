@@ -1,4 +1,5 @@
-import { signUp, useSession } from '@/lib/auth-client'
+
+import { signIn, useSession } from '@/lib/auth-client'
 import { CircleX, KeyRound, Mail, User, Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -21,38 +22,25 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 
 // Zod validation schema
 const signUpSchema = z.object({
-  name: z
-    .string()
-    .min(3, 'Name must be at least 3 characters')
-    .max(30, 'Name must not exceed 30 characters')
-    .regex(/^[A-Za-z][\w\-]*$/, 'Name must start with a letter and contain only letters, numbers, or dashes'),
   email: z
     .string()
     .email('Please enter a valid email address'),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters long'),
-  confirmPassword: z
-    .string()
-    .min(8, 'Password must be at least 8 characters long'),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
 })
 
 type SignUpForm = z.infer<typeof signUpSchema>
 
-export default function SignUp() {
+export default function SignIn() {
   const navigate = useNavigate()
   const { data: session } = useSession()
 
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: '',
       email: '',
       password: '',
-      confirmPassword: '',
     },
   })
 
@@ -66,8 +54,7 @@ export default function SignUp() {
 
   const onSubmit = async (data: SignUpForm) => {
     try {
-      await signUp.email({
-        name: data.name,
+      await signIn.email({
         email: data.email,
         password: data.password,
       })
@@ -77,7 +64,7 @@ export default function SignUp() {
         type: 'manual',
         message: 'An unexpected error occurred. Please try again.',
       })
-      console.error('Signup failed:', err)
+      console.error('Loagin failed:', err)
     }
   }
 
@@ -87,11 +74,8 @@ export default function SignUp() {
         <Card className="shadow-lg">
           <CardHeader className="space-y-1">
             <CardTitle className="text-3xl font-bold text-center text-gray-900">
-              Create an Account
+              Login
             </CardTitle>
-            <p className="text-center text-gray-600">
-              Sign up to get started
-            </p>
           </CardHeader>
           <CardContent className="space-y-4">
             {errors.root && (
@@ -105,28 +89,6 @@ export default function SignUp() {
 
             <Form {...form}>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-700">Full Name</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                          <Input
-                            {...field}
-                            type="text"
-                            placeholder="Full Name"
-                            disabled={isSubmitting}
-                            className="pl-10 border-gray-300 focus:border-blue-600 focus:ring-blue-600"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
 
                 <FormField
                   control={form.control}
@@ -174,28 +136,6 @@ export default function SignUp() {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-700">Confirm Password</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <KeyRound className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                          <Input
-                            {...field}
-                            type="password"
-                            placeholder="Confirm Password"
-                            disabled={isSubmitting}
-                            className="pl-10 border-gray-300 focus:border-blue-600 focus:ring-blue-600"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
 
                 <Button
                   type="submit"
@@ -205,10 +145,10 @@ export default function SignUp() {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Creating account...
+                      Login...
                     </>
                   ) : (
-                    'Sign Up'
+                    'login'
                   )}
                 </Button>
               </form>
@@ -216,12 +156,12 @@ export default function SignUp() {
 
             <div className="text-center">
               <p className="text-sm text-gray-600">
-                Already have an account?{' '}
+                Don't have an account?{' '}
                 <Link
-                  to="/sign-in"
+                  to="/sign-up"
                   className="font-medium text-blue-600 hover:text-blue-500 transition duration-150 ease-in-out"
                 >
-                  Sign in
+                  Sign up
                 </Link>
               </p>
             </div>
