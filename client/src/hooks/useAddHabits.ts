@@ -6,6 +6,7 @@ const addHabit = async ({ title, description, frequency }: { title: string, desc
 
   const response = await fetch(`${import.meta.env.VITE_API_URL}/habits`, {
     method: 'POST',
+    credentials: "include",
     headers: {
       "content-type": "application/json"
     },

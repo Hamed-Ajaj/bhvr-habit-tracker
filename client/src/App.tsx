@@ -12,11 +12,12 @@ import { useEffect } from 'react';
 // const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
 // Layout that includes the sidebar
 function SidebarLayout() {
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
+  console.log("Session data:", session);
   const navigate = useNavigate();
-  if (session === null) <h1>loading</h1>
+  if (isPending) <h1>loading</h1>
   useEffect(() => {
-    if (!session && session !== null) {
+    if (!session && !isPending) {
       navigate('/sign-in')
     }
   }, [session, navigate])

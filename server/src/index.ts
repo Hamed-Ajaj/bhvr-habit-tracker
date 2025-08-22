@@ -1,10 +1,10 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import { Database } from "bun:sqlite";
 import { auth } from './lib/auth';
 import { todos } from './routes/todo.route';
 import { habits } from './routes/habits.route';
 import { logger } from 'hono/logger';
+import { authMiddleware } from './middleware/auth.middleware';
 
 const app = new Hono()
 
@@ -24,10 +24,9 @@ app.use(
 
 // Group all API routes under /api
 const api = new Hono();
-
 api.on(["POST", "GET"], "/auth/**", (c) => auth.handler(c.req.raw));
-api.route("/todos", todos);
-api.route("/habits", habits);
+api.use(authMiddleware).route("/todos", todos);
+api.use(authMiddleware).route("/habits", habits);
 
 app.route("/api", api);
 

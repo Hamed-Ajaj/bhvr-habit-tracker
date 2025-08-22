@@ -34,7 +34,7 @@ type SignUpForm = z.infer<typeof signUpSchema>
 
 export default function SignIn() {
   const navigate = useNavigate()
-  const { data: session } = useSession()
+  const { data: session, isPending } = useSession()
 
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
@@ -47,7 +47,7 @@ export default function SignIn() {
   const { handleSubmit, setError, formState: { isSubmitting, errors } } = form
 
   useEffect(() => {
-    if (session) {
+    if (isPending && session) {
       navigate('/todos')
     }
   }, [session, navigate])

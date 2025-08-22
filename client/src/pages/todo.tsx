@@ -20,6 +20,7 @@ const TodoList: React.FC = () => {
 
   const { todos: tanstackTodos, isFetching, isLoading, error, isError } =
     useTodos();
+  console.log("Todos data:", tanstackTodos);
   const tanstackAddTodo = useAddTodo();
   const tanstackDeleteTodo = useDeleteTodo();
   const tanstackUpdateTodo = useUpdateTodo();
@@ -28,7 +29,8 @@ const TodoList: React.FC = () => {
   const addTodo = async () => {
     if (newTodo.trim()) {
       try {
-        await tanstackAddTodo.mutateAsync(newTodo.trim());
+        const addedTodo = await tanstackAddTodo.mutateAsync(newTodo.trim());
+        console.log("Added todo:", addedTodo);
         setNewTodo("");
       } catch (error) {
         console.error("Error adding todo:", error);

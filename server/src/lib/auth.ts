@@ -1,4 +1,5 @@
 import { betterAuth } from "better-auth";
+import { openAPI } from "better-auth/plugins";
 
 import { Database } from "bun:sqlite";
 
@@ -8,4 +9,5 @@ export const auth = betterAuth({
     enabled: true,
   },
   trustedOrigins: ["http://localhost:5173"],
+  plugins: [openAPI()],
 })

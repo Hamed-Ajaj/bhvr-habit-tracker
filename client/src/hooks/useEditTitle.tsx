@@ -4,6 +4,7 @@ const editTitle = async ({ id, title, completed }: { id: number, title: string, 
 
   const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
     method: 'PUT',
+    credentials: "include",
     headers: {
       'Content-Type': 'application/json',
     },

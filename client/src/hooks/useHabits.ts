@@ -13,7 +13,9 @@ interface Habit {
 }
 
 const fetchHabits = async (): Promise<Habit> => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/habits`);
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/habits`, {
+    credentials: "include"
+  });
   const data = await response.json();
   return data;
 }

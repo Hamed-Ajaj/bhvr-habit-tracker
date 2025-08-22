@@ -4,6 +4,7 @@ const addTodo = async (title: string) => {
 
   const response = await fetch(`${import.meta.env.VITE_API_URL}/todos`, {
     method: 'POST',
+    credentials: "include",
     headers: {
       'Content-Type': 'application/json',
     },

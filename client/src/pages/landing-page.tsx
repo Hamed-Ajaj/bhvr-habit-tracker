@@ -11,13 +11,13 @@ export default function LandingPage() {
           <h1 className="text-2xl font-bold text-gray-900">HabitTracker</h1>
           <div className="space-x-4">
             <Link
-              to="/auth"
+              to="/sign-in"
               className="text-gray-600 hover:text-gray-900"
             >
               Sign In
             </Link>
             <Link
-              to="/auth"
+              to="/sign-up"
               className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
               Get Started

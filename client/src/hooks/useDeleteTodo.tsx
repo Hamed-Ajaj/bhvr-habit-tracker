@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const delteTodo = async (id: number) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
     method: "DELETE",
+    credentials: "include"
   })
   return response.json();
 }
