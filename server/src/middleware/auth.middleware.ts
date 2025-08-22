@@ -1,7 +1,8 @@
 import { createMiddleware } from 'hono/factory';
 import { auth } from '../lib/auth';
+import type { HonoEnv } from '@server/types';
 
-export const authMiddleware = createMiddleware(async (c, next) => {
+export const authMiddleware = createMiddleware<HonoEnv>(async (c, next) => {
   console.log("Request headers:", c.req.raw.headers);
   const session = await auth.api.getSession({ headers: c.req.raw.headers });
 

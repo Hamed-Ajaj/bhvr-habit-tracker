@@ -25,7 +25,6 @@ db.run(`
     title TEXT NOT NULL,
     completed INTEGER DEFAULT 0,
     user_id TEXT NOT NULL,
-
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   )
 `);
