@@ -1,6 +1,6 @@
 import db from "./index";
 
-db.run(`DROP TABLE todos`);
+db.run(`DROP TABLE IF EXISTS todos`);
 
 // Create habits table
 db.run(`

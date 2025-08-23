@@ -10,4 +10,4 @@ export const auth = betterAuth({
   },
   trustedOrigins: ["http://localhost:5173"],
   plugins: [openAPI()],
-})
+}) as ReturnType<typeof betterAuth>
