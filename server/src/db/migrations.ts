@@ -1,6 +1,6 @@
 import db from "./index";
 
-db.run(`DROP TABLE IF EXISTS todos`);
+// db.run(`DROP TABLE IF EXISTS habits`);
 
 // Create habits table
 db.run(`
@@ -11,7 +11,6 @@ db.run(`
     description TEXT,
     frequency TEXT DEFAULT 'daily',
     start_date TEXT DEFAULT CURRENT_DATE,
-    completed INTEGER DEFAULT 0,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   )
 `);
@@ -28,5 +27,15 @@ db.run(`
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   )
 `);
+
+db.run(`
+CREATE TABLE IF NOT EXISTS habit_logs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  habit_id INTEGER NOT NULL,
+  date TEXT NOT NULL DEFAULT CURRENT_DATE,
+  completed INTEGER DEFAULT 1,
+  FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
+);
+`)
 
 console.log("✅ Tables created successfully");

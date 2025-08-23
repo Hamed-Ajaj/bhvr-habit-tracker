@@ -13,7 +13,6 @@ import { useEffect } from 'react';
 // Layout that includes the sidebar
 function SidebarLayout() {
   const { data: session, isPending } = useSession()
-  console.log("Session data:", session);
   const navigate = useNavigate();
   if (isPending) <h1>loading</h1>
   useEffect(() => {

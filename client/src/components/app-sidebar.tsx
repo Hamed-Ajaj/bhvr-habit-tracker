@@ -26,7 +26,7 @@ import {
 import { Link, useLocation } from "react-router-dom"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { signOut } from "@/lib/auth-client"
+import { signOut, useSession } from "@/lib/auth-client"
 
 // Main navigation items
 const mainItems = [
@@ -68,8 +68,9 @@ const analyticsItems = [
 
 export function AppSidebar() {
   const location = useLocation()
-  const userName = "Hamed" // You can get this from your auth context
-
+  // const userName = "Hamed" // You can get this from your auth context
+  const { data: session } = useSession();
+  const userName = session?.user?.name || "User";
   return (
     <Sidebar className="border-r border-slate-200 bg-slate-50">
       {/* Header with Logo */}

@@ -27,7 +27,6 @@ const AddHabitDialog = () => {
       description: formData.description,
       frequency: formData.frequency
     })
-    console.log('Habit added:', habit);
 
     // Reset form
     setFormData({
@@ -130,7 +129,7 @@ const AddHabitDialog = () => {
                 Cancel
               </button>
             </AlertDialogCancel>
-            <AlertDialogAction asChild>
+            <AlertDialogAction asChild className="bg-blue-600 hover:bg-blue-700 text-white">
               <button
                 onClick={handleSubmit}
                 disabled={!formData.title.trim()}

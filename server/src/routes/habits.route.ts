@@ -5,15 +5,45 @@ import { authMiddleware } from "@server/middleware/auth.middleware";
 export const habits = new Hono();
 
 
+// habits.use(authMiddleware).get("/", (c) => {
+//   const user = c.get("user");
+//   const userId = user?.id;
+//   const habits = db.query("SELECT * FROM habits WHERE user_id = ?").all(userId);
+//   return c.json({
+//     success: true,
+//     habits
+//   })
+// })
+
 habits.use(authMiddleware).get("/", (c) => {
   const user = c.get("user");
   const userId = user?.id;
-  const habits = db.query("SELECT * FROM habits WHERE user_id = ?").all(userId);
-  return c.json({
-    success: true,
-    habits
-  })
+  const habits = db.query(`
+      SELECT h.id,
+       h.name,
+       h.description,
+       h.frequency,
+       h.start_date,
+hl.id as habit_log_id,
+       CASE WHEN hl.id IS NOT NULL THEN 1 ELSE 0 END as completed
+FROM habits h
+LEFT JOIN habit_logs hl
+  ON h.id = hl.habit_id
+ AND hl.date = DATE('now')
+WHERE h.user_id = ?;`).all(userId)
+  return c.json({ success: true, habits: habits })
 })
+
+
+// POST /habits/:id/complete
+habits.post("/:id/complete", (c) => {
+  const id = c.req.param("id");
+  db.run(
+    "INSERT INTO habit_logs (habit_id, date, completed) VALUES (?, DATE('now'), 1)",
+    [id]
+  );
+  return c.json({ success: true });
+});
 
 habits.use(authMiddleware).post("/", async (c) => {
 

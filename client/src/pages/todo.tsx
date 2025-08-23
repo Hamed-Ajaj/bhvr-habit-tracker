@@ -30,7 +30,6 @@ const TodoList: React.FC = () => {
     if (newTodo.trim()) {
       try {
         const addedTodo = await tanstackAddTodo.mutateAsync(newTodo.trim());
-        console.log("Added todo:", addedTodo);
         setNewTodo("");
       } catch (error) {
         console.error("Error adding todo:", error);

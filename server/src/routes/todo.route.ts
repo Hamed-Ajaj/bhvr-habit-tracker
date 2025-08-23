@@ -11,7 +11,6 @@ todos.use(authMiddleware).get("/", (c) => {
   return c.json({
     success: true,
     todos,
-    userId
   })
 })
 
