@@ -8,6 +8,7 @@ import { authMiddleware } from './middleware/auth.middleware';
 
 const app = new Hono()
 
+
 app.use(logger())
 
 app.use(
