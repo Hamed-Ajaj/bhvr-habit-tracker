@@ -8,7 +8,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  baseURL: import.meta.env.BETTER_AUTH_URL,
-  trustedOrigins: ["http://localhost:5173", "https://bhvr-habit-tracker-production.up.railway.app", "https://bhvr-habit-tracker.pages.dev"],
+  // baseURL: import.meta.env.BETTER_AUTH_URL,
+  trustedOrigins: ["http://localhost:5173", "https://bhvr-habit-tracker.pages.dev"],
   plugins: [openAPI()],
 }) as ReturnType<typeof betterAuth>
