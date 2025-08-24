@@ -13,7 +13,7 @@ app.use(logger())
 app.use(
   "*",
   cors({
-    origin: ["http://localhost:5173", "https://bhvr-habit-tracker.pages.dev/", "http://localhost:3000", "https://bhvr-habit-tracker-production.up.railway.app"],
+    origin: ["http://localhost:5173", "https://bhvr-habit-tracker.pages.dev", "http://localhost:3000", "https://bhvr-habit-tracker-production.up.railway.app"],
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["POST", "GET", "OPTIONS", "DELETE", "PUT"],
     exposeHeaders: ["Content-Length"],

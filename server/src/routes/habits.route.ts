@@ -19,18 +19,19 @@ habits.use(authMiddleware).get("/", (c) => {
   const user = c.get("user");
   const userId = user?.id;
   const habits = db.query(`
-      SELECT h.id,
-       h.name,
-       h.description,
-       h.frequency,
-       h.start_date,
+SELECT h.id,
+h.name,
+h.description,
+h.frequency,
+h.start_date,
 hl.id as habit_log_id,
-       CASE WHEN hl.id IS NOT NULL THEN 1 ELSE 0 END as completed
+CASE WHEN hl.id IS NOT NULL THEN 1 ELSE 0 END as completed
 FROM habits h
 LEFT JOIN habit_logs hl
-  ON h.id = hl.habit_id
- AND hl.date = DATE('now')
-WHERE h.user_id = ?;`).all(userId)
+ON h.id = hl.habit_id
+AND hl.date = DATE('now')
+WHERE h.user_id = ?;`)
+    .all(userId)
   return c.json({ success: true, habits: habits })
 })
 
@@ -38,11 +39,24 @@ WHERE h.user_id = ?;`).all(userId)
 // POST /habits/:id/complete
 habits.post("/:id/complete", (c) => {
   const id = c.req.param("id");
-  db.run(
-    "INSERT INTO habit_logs (habit_id, date, completed) VALUES (?, DATE('now'), 1)",
-    [id]
-  );
-  return c.json({ success: true });
+
+  const existing = db
+    .query("SELECT id FROM habit_logs WHERE habit_id = ? AND date = DATE('now')")
+    .get(id);
+  console.log(existing);
+
+  if (existing) {
+    // If already completed today → delete it (uncheck)
+    db.run("DELETE FROM habit_logs WHERE habit_id = ? AND date = DATE('now')", [id]);
+    return c.json({ success: true, completed: false });
+  } else {
+    // If not completed today → insert new log
+    db.run(
+      "INSERT INTO habit_logs (habit_id, date, completed) VALUES (?, DATE('now'), 1)",
+      [id]
+    );
+    return c.json({ success: true, completed: true });
+  }
 });
 
 habits.use(authMiddleware).post("/", async (c) => {
