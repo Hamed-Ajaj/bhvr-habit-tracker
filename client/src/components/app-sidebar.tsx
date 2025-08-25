@@ -45,11 +45,6 @@ const mainItems = [
     url: "/habits",
     icon: Target,
   },
-  {
-    title: "Weekly Planning",
-    url: "/planning",
-    icon: Calendar,
-  },
 ]
 
 // Analytics & extras

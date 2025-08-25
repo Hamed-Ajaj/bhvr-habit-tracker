@@ -57,7 +57,12 @@ export default function SignIn() {
       await signIn.email({
         email: data.email,
         password: data.password,
-      })
+      },
+        {
+          credentials: 'include',
+
+        }
+      )
       navigate('/todos')
     } catch (err) {
       setError('root', {

@@ -20,7 +20,7 @@ export const auth = betterAuth({
       options: {
         httpOnly: true,
         secure: true,
-        sameSite: "none", // Allow cross-site cookies
+        sameSite: "", // ✅ This is key for cross-site
         path: "/",
         maxAge: 60 * 60 * 24 * 7, // 7 days
       }
