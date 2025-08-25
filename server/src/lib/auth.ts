@@ -1,11 +1,9 @@
 import { betterAuth } from "better-auth";
 import { openAPI } from "better-auth/plugins";
 import { Database } from "bun:sqlite";
-const dbPath = process.env.NODE_ENV === "production"
-  ? "/data/auth.db" // if you mount a Railway volume
-  : "./auth.db";    // local dev
+
 export const auth = betterAuth({
-  database: new Database(dbPath),
+  database: new Database("./auth.db"),
   emailAndPassword: {
     enabled: true,
   },
