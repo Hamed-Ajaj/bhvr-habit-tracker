@@ -47,7 +47,7 @@ export default function SignIn() {
   const { handleSubmit, setError, formState: { isSubmitting, errors } } = form
 
   useEffect(() => {
-    if (isPending && session) {
+    if (!isPending && session) {
       navigate('/todos')
     }
   }, [session, navigate])
