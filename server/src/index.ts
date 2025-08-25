@@ -16,7 +16,7 @@ app.use(
   "*",
   cors({
     origin: ["http://localhost:5173", "https://bhvr-habit-tracker.pages.dev", "http://localhost:3000", "https://bhvr-habit-tracker-production.up.railway.app"],
-    allowHeaders: ["Content-Type", "Authorization"],
+    allowHeaders: ["Content-Type", "Authorization", "Cookie"],
     allowMethods: ["POST", "GET", "OPTIONS", "DELETE", "PUT"],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
@@ -27,6 +27,12 @@ app.use(
 // Group all API routes under /api
 const api = new Hono();
 api.on(["POST", "GET"], "/auth/**", (c) => auth.handler(c.req.raw));
+
+api.use('*', async (c, next) => {
+  console.log('Request headers:', Object.fromEntries(c.req.raw.headers.entries()))
+  console.log('Cookie header:', c.req.header('cookie'))
+  await next()
+})
 api.use(authMiddleware).route("/todos", todos);
 api.use(authMiddleware).route("/habits", habits);
 
