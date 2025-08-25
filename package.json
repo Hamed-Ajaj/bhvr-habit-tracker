@@ -22,7 +22,7 @@
     "type-check": "turbo type-check",
     "test": "turbo test",
     "postinstall": "turbo build --filter=shared --filter=server",
-    "start": "bunx --bun  @better-auth/cli generate --config server/src/lib/auth.ts && bunx --bun  @better-auth/cli migrate --config server/src/lib/auth.ts && bun run server/dist/index.js"
+    "start": "bun run server/dist/index.js"
   },
   "keywords": [
     "bun",
