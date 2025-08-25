@@ -22,7 +22,7 @@
     "type-check": "turbo type-check",
     "test": "turbo test",
     "postinstall": "turbo build --filter=shared --filter=server",
-    "start": "turbo run start:prod --filter=server"
+    "start": "bun run server/dist/index.js"
   },
   "keywords": [
     "bun",
