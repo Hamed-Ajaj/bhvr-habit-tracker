@@ -24,6 +24,7 @@ export const auth = betterAuth({
         path: "/",
         maxAge: 60 * 60 * 24 * 7, // 7 days
       }
-    },
-    plugins: [openAPI()],
-  }) as ReturnType<typeof betterAuth>
+    }
+  },
+  plugins: [openAPI()],
+}) as ReturnType<typeof betterAuth>
