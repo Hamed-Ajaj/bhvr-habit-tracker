@@ -9,6 +9,7 @@ import { useSession } from './lib/auth-client.ts';
 import SignIn from './pages/auth/signIn.tsx';
 import SignUp from './pages/auth/auth-page';
 import { useEffect } from 'react';
+import Analytics from './pages/analytics.tsx';
 // const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
 // Layout that includes the sidebar
 function SidebarLayout() {
@@ -49,6 +50,7 @@ function App() {
         <Route path="/habits" element={<HabitsPage />} />
         <Route path="/focus" element={<FocusPage />} />
         <Route path="/todos" element={<TodoList />} />
+        <Route path="/analytics" element={<Analytics />} />
       </Route>
 
     </Routes>

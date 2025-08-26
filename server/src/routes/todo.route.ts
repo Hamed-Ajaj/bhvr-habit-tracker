@@ -6,8 +6,18 @@ export const todos = new Hono()
 
 todos.use(authMiddleware).get("/", (c) => {
   const user = c.get("user");
-  const userId = user?.id;
-  const todos = db.query("SELECT * FROM todos WHERE user_id = ?").all(userId)
+  const userid = user?.id;
+  const todos = db.query("select * from todos where user_id = ?").all(userid)
+  return c.json({
+    success: true,
+    todos,
+  })
+})
+
+todos.use(authMiddleware).get("/completed", (c) => {
+  const user = c.get("user");
+  const userid = user?.id;
+  const todos = db.query("select * from todos where user_id = ? AND completed = 1").all(userid)
   return c.json({
     success: true,
     todos,
