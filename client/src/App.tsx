@@ -10,13 +10,14 @@ import SignIn from './pages/auth/signIn.tsx';
 import SignUp from './pages/auth/auth-page';
 import { useEffect } from 'react';
 import Analytics from './pages/analytics.tsx';
-// const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000"
-// Layout that includes the sidebar
+import Loader from './components/ui/loader.tsx';
+
 function SidebarLayout() {
   const { data: session, isPending } = useSession()
-  console.log('Session data:', session);
   const navigate = useNavigate();
-  if (isPending) <h1>loading</h1>
+  // if (isPending) {
+  //   return <Loader />
+  // }
   useEffect(() => {
     if (!session && !isPending) {
       navigate('/sign-in')
@@ -36,8 +37,13 @@ function SidebarLayout() {
     </SidebarProvider>
   );
 }
+
 function App() {
 
+  const { data: session, isPending } = useSession()
+  if (isPending) {
+    return <Loader />
+  }
   return (
     <Routes>
 

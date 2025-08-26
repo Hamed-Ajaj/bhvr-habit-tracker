@@ -51,6 +51,9 @@ export const useUpdateTodo = () => {
     onError: (_err, _vars, context) => {
       queryClient.setQueryData(["todos"], context?.prev);
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["todos"] }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["completed-todos"] })
+    },
   });
 }

@@ -1,13 +1,7 @@
+import { delteTodo } from "@/api/todos";
 import { Todo } from "@/pages/todo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const delteTodo = async (id: number) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
-    method: "DELETE",
-    credentials: "include"
-  })
-  return response.json();
-}
 
 export const useDeleteTodo = () => {
 
@@ -30,6 +24,9 @@ export const useDeleteTodo = () => {
     onError: (_err, _vars, context) => {
       queryClient.setQueryData(["todos"], context?.prev);
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["todos"] }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      queryClient.invalidateQueries({ queryKey: ["completed-todos"] })
+    },
   })
 }

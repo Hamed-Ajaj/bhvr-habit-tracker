@@ -17,10 +17,10 @@ todos.use(authMiddleware).get("/", (c) => {
 todos.use(authMiddleware).get("/completed", (c) => {
   const user = c.get("user");
   const userid = user?.id;
-  const todos = db.query("select * from todos where user_id = ? AND completed = 1").all(userid)
+  const completed = db.query("select * from todos where user_id = ? AND completed = 1").all(userid)
   return c.json({
     success: true,
-    todos,
+    completed,
   })
 })
 

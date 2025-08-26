@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Plus, Edit2, Trash2, ChevronDown } from "lucide-react";
+import { Plus, Edit2, Trash2 } from "lucide-react";
 import { useTodos } from "@/hooks/useTodos";
 import { useAddTodo } from "@/hooks/useAddTodo";
 import { useDeleteTodo } from "@/hooks/useDeleteTodo";
 import { useUpdateTodo } from "@/hooks/useUpdateTodo";
 import { useEditTitle } from "@/hooks/useEditTitle";
+import Loader from "@/components/ui/loader";
 
 export interface Todo {
   id: number;
@@ -14,42 +15,39 @@ export interface Todo {
 
 const TodoList: React.FC = () => {
   const [newTodo, setNewTodo] = useState("");
-  const [filter, setFilter] = useState<"Active" | "Completed" | "All">("Active");
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editText, setEditText] = useState("");
 
-  const { todos: tanstackTodos, isFetching, isLoading, error, isError } =
-    useTodos();
-  console.log("Todos data:", tanstackTodos);
+  const { todos: tanstackTodos, isLoading } = useTodos();
   const tanstackAddTodo = useAddTodo();
   const tanstackDeleteTodo = useDeleteTodo();
   const tanstackUpdateTodo = useUpdateTodo();
   const tanstackEditTitle = useEditTitle();
 
   const addTodo = async () => {
-    if (newTodo.trim()) {
-      try {
-        const addedTodo = await tanstackAddTodo.mutateAsync(newTodo.trim());
-        setNewTodo("");
-      } catch (error) {
-        console.error("Error adding todo:", error);
-      }
+    if (!newTodo.trim()) return;
+    try {
+      await tanstackAddTodo.mutateAsync(newTodo.trim());
+      setNewTodo("");
+    } catch {
+      /* handled in hooks */
+      console.log("error adding todo");
     }
   };
 
   const toggleTodo = async (id: number, title: string, completed: boolean) => {
     try {
       await tanstackUpdateTodo.mutateAsync({ id, title, completed });
-    } catch (error) {
-      console.error("Error updating todo:", error);
+    } catch {
+      /* handled in hooks */
     }
   };
 
   const deleteTodo = async (id: number) => {
     try {
       await tanstackDeleteTodo.mutateAsync(id);
-    } catch (error) {
-      console.error("Error deleting todo:", error);
+    } catch {
+      /* handled in hooks */
     }
   };
 
@@ -60,19 +58,23 @@ const TodoList: React.FC = () => {
 
   const saveEdit = async () => {
     const todo = tanstackTodos?.todos?.find((t) => t.id === editingId);
-    if (editText.trim() && editingId && todo) {
-      try {
-        await tanstackEditTitle.mutateAsync({
-          id: editingId,
-          title: editText.trim(),
-          completed: todo.completed,
-        });
-      } catch (error) {
-        console.error("Error updating title:", error);
-      }
+    if (!editText.trim() || !editingId || !todo) return;
+
+    try {
+
+      setEditText("");
+      setEditingId(null);
+
+      await tanstackEditTitle.mutateAsync({
+        id: editingId,
+        title: editText.trim(),
+        completed: todo.completed,
+      });
+
+    } finally {
+      setEditingId(null);
+      setEditText("");
     }
-    setEditingId(null);
-    setEditText("");
   };
 
   const cancelEdit = () => {
@@ -80,12 +82,7 @@ const TodoList: React.FC = () => {
     setEditText("");
   };
 
-  const filteredTodos = tanstackTodos?.todos?.filter((todo) => {
-    if (filter === "Active") return !todo.completed;
-    if (filter === "Completed") return todo.completed;
-    return true;
-  });
-
+  if (isLoading) return <Loader />;
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white">
@@ -95,7 +92,7 @@ const TodoList: React.FC = () => {
         <p className="text-gray-600">Plan your day and track your tasks</p>
       </div>
 
-      {/* Add Todo Input */}
+      {/* Add Todo */}
       <div className="flex gap-3 mb-6">
         <input
           type="text"
@@ -103,51 +100,27 @@ const TodoList: React.FC = () => {
           onChange={(e) => setNewTodo(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && addTodo()}
           placeholder="Add a new task..."
-          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           onClick={addTodo}
-          className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          disabled={tanstackAddTodo.isPending}
+          className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60"
         >
-          {tanstackAddTodo.isPending ? "Adding..." : "Add"}
-          {/* <Plus size={20} /> */}
+          {tanstackAddTodo.isPending ? "Adding…" : "Add"}
         </button>
-      </div>
-
-      {/* Filter and Count */}
-      <div className="flex justify-between items-center mb-6">
-        <div className="relative">
-          <select
-            value={filter}
-            onChange={(e) =>
-              setFilter(e.target.value as "Active" | "Completed" | "All")
-            }
-            className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="Active">Active</option>
-            <option value="Completed">Completed</option>
-            <option value="All">All</option>
-          </select>
-          <ChevronDown
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
-            size={16}
-          />
-        </div>
-        <span className="text-gray-600">Tasks: {filteredTodos?.length}</span>
       </div>
 
       {/* Todo List */}
       <div className="space-y-3">
-        {filteredTodos?.map((todo: Todo) => (
+        {tanstackTodos?.todos?.map((todo: Todo) => (
           <div
             key={todo.id}
             className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200"
           >
             {/* Checkbox */}
             <button
-              onClick={() =>
-                toggleTodo(todo.id, todo.title, !todo.completed)
-              }
+              onClick={() => toggleTodo(todo.id, todo.title, !todo.completed)}
               className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${todo.completed
                 ? "bg-blue-500 border-blue-500 text-white"
                 : "border-gray-300 hover:border-blue-400"
@@ -168,14 +141,14 @@ const TodoList: React.FC = () => {
               )}
             </button>
 
-            {/* Todo Text */}
+            {/* Title */}
             <div className="flex-1">
               {editingId === todo.id ? (
                 <input
                   type="text"
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
-                  onKeyPress={(e) => {
+                  onKeyDown={(e) => {
                     if (e.key === "Enter") saveEdit();
                     if (e.key === "Escape") cancelEdit();
                   }}
@@ -185,9 +158,7 @@ const TodoList: React.FC = () => {
                 />
               ) : (
                 <span
-                  className={`${todo.completed
-                    ? "text-gray-500 line-through"
-                    : "text-gray-900"
+                  className={`${todo.completed ? "text-gray-500 line-through" : "text-gray-900"
                     }`}
                 >
                   {todo.title}
@@ -195,7 +166,7 @@ const TodoList: React.FC = () => {
               )}
             </div>
 
-            {/* Action Buttons */}
+            {/* Actions */}
             <div className="flex gap-2">
               <button
                 onClick={() => startEdit(todo.id, todo.title)}
@@ -211,9 +182,7 @@ const TodoList: React.FC = () => {
               </button>
             </div>
           </div>
-        ))
-        }
-
+        ))}
       </div>
     </div>
   );

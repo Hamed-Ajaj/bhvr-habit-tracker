@@ -30,26 +30,6 @@ export const useAddHabit = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: addHabit,
-
-    // onMutate: async (title: string) => {
-    //   await queryClient.cancelQueries({ queryKey: ["habits"] });
-    //   const prev = queryClient.getQueryData(["habits"]);
-    //
-    //   queryClient.setQueryData(["habits"], (old: any) => ({
-    //     ...old,
-    //     habits: [
-    //       ...(old?.habits ?? []),
-    //       { id: Date.now(), title, completed: false },
-    //     ],
-    //   }));
-    //
-    //   return { prev };
-    // },
-
-    // onError: (_err, _vars, context) => {
-    //   queryClient.setQueryData(["habits"], context?.prev);
-    // },
-
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["habits"] }),
   });
 }

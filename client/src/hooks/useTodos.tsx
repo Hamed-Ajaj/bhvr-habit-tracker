@@ -1,9 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 
-interface Todo {
+interface TodoItem {
   id: number;
   title: string;
   completed: boolean;
+}
+interface Todo {
+  success: boolean;
+  todos: TodoItem[];
 }
 
 const fetchTodos = async (): Promise<Todo> => {
