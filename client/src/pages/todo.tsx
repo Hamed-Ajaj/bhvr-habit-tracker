@@ -27,8 +27,8 @@ const TodoList: React.FC = () => {
   const addTodo = async () => {
     if (!newTodo.trim()) return;
     try {
-      await tanstackAddTodo.mutateAsync(newTodo.trim());
       setNewTodo("");
+      await tanstackAddTodo.mutateAsync(newTodo.trim());
     } catch {
       /* handled in hooks */
       console.log("error adding todo");
