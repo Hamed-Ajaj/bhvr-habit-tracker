@@ -107,7 +107,8 @@ const TodoList: React.FC = () => {
           disabled={tanstackAddTodo.isPending}
           className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60"
         >
-          {tanstackAddTodo.isPending ? "Adding…" : "Add"}
+          {/* {tanstackAddTodo.isPending ? "Adding…" : "Add"} */}
+          <Plus />
         </button>
       </div>
 
