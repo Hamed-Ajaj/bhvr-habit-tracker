@@ -86,7 +86,6 @@ const TodoList: React.FC = () => {
     return true;
   });
 
-  if (isLoading) return <h1>Loading...</h1>;
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white">
@@ -110,7 +109,8 @@ const TodoList: React.FC = () => {
           onClick={addTodo}
           className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          <Plus size={20} />
+          {tanstackAddTodo.isPending ? "Adding..." : "Add"}
+          {/* <Plus size={20} /> */}
         </button>
       </div>
 
@@ -138,88 +138,82 @@ const TodoList: React.FC = () => {
 
       {/* Todo List */}
       <div className="space-y-3">
-        {isFetching ? (
-          <h1>Loading...</h1>
-        ) : (
-          filteredTodos?.map((todo: Todo) => (
-            <div
-              key={todo.id}
-              className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200"
+        {filteredTodos?.map((todo: Todo) => (
+          <div
+            key={todo.id}
+            className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200"
+          >
+            {/* Checkbox */}
+            <button
+              onClick={() =>
+                toggleTodo(todo.id, todo.title, !todo.completed)
+              }
+              className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${todo.completed
+                ? "bg-blue-500 border-blue-500 text-white"
+                : "border-gray-300 hover:border-blue-400"
+                }`}
             >
-              {/* Checkbox */}
-              <button
-                onClick={() =>
-                  toggleTodo(todo.id, todo.title, !todo.completed)
-                }
-                className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${todo.completed
-                  ? "bg-blue-500 border-blue-500 text-white"
-                  : "border-gray-300 hover:border-blue-400"
-                  }`}
-              >
-                {!!todo.completed && (
-                  <svg
-                    className="w-3 h-3"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                )}
-              </button>
-
-              {/* Todo Text */}
-              <div className="flex-1">
-                {editingId === todo.id ? (
-                  <input
-                    type="text"
-                    value={editText}
-                    onChange={(e) => setEditText(e.target.value)}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") saveEdit();
-                      if (e.key === "Escape") cancelEdit();
-                    }}
-                    onBlur={saveEdit}
-                    className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    autoFocus
+              {!!todo.completed && (
+                <svg
+                  className="w-3 h-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
                   />
-                ) : (
-                  <span
-                    className={`${todo.completed
-                      ? "text-gray-500 line-through"
-                      : "text-gray-900"
-                      }`}
-                  >
-                    {todo.title}
-                  </span>
-                )}
-              </div>
+                </svg>
+              )}
+            </button>
 
-              {/* Action Buttons */}
-              <div className="flex gap-2">
-                <button
-                  onClick={() => startEdit(todo.id, todo.title)}
-                  className="p-2 text-gray-500 hover:text-blue-600 transition-colors"
+            {/* Todo Text */}
+            <div className="flex-1">
+              {editingId === todo.id ? (
+                <input
+                  type="text"
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === "Enter") saveEdit();
+                    if (e.key === "Escape") cancelEdit();
+                  }}
+                  onBlur={saveEdit}
+                  className="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  autoFocus
+                />
+              ) : (
+                <span
+                  className={`${todo.completed
+                    ? "text-gray-500 line-through"
+                    : "text-gray-900"
+                    }`}
                 >
-                  <Edit2 size={16} />
-                </button>
-                <button
-                  onClick={() => deleteTodo(todo.id)}
-                  className="p-2 text-gray-500 hover:text-red-600 transition-colors"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
+                  {todo.title}
+                </span>
+              )}
             </div>
-          ))
-        )}
 
-        {filteredTodos?.length === 0 && (
-          <div className="text-center py-8 text-gray-500">No tasks found</div>
-        )}
+            {/* Action Buttons */}
+            <div className="flex gap-2">
+              <button
+                onClick={() => startEdit(todo.id, todo.title)}
+                className="p-2 text-gray-500 hover:text-blue-600 transition-colors"
+              >
+                <Edit2 size={16} />
+              </button>
+              <button
+                onClick={() => deleteTodo(todo.id)}
+                className="p-2 text-gray-500 hover:text-red-600 transition-colors"
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          </div>
+        ))
+        }
+
       </div>
     </div>
   );
