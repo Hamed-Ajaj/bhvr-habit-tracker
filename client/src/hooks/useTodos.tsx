@@ -16,7 +16,7 @@ const fetchTodos = async (): Promise<Todo> => {
 
 
 export const useTodos = () => {
-  const { data: todos, isFetching, isLoading, isError, error } = useQuery({ queryKey: ['todos'], queryFn: fetchTodos, staleTime: 1000 * 60 * 5 });
+  const { data: todos, isFetching, isLoading, isError, error } = useQuery({ queryKey: ['todos'], queryFn: fetchTodos, staleTime: Infinity });
 
   return { todos, isFetching, isError, isLoading, error };
 }

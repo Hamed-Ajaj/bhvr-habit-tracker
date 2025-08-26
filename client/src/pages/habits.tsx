@@ -9,8 +9,8 @@ import { useUpdateHabit } from "@/hooks/useUpateHabit";
 import HabitItem from "@/components/ui/habit-item";
 // import EditHabitDialog from "@/components/ui/edit-habit-dialog";
 const HabitsPage = () => {
-  const { habits, isFetching } = useHabits();
-  console.log(habits);
+  const { habits } = useHabits();
+
   return (
     <div className="max-w-3xl mx-auto p-6">
       {/* Page Header */}

@@ -1,3 +1,4 @@
+import { Todo } from "@/pages/todo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const updateTodo = async ({
@@ -34,11 +35,22 @@ export const useUpdateTodo = () => {
 
   return useMutation({
     mutationFn: updateTodo,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    onMutate: async (updated) => {
+      await queryClient.cancelQueries({ queryKey: ["todos", updated.id] });
+      const prev = queryClient.getQueryData(["todos"]);
+
+      queryClient.setQueryData(["todos"], (old: any) => ({
+        ...old,
+        todos: old.todos.map((t: Todo) =>
+          t.id === updated.id ? { ...t, ...updated } : t
+        ),
+      }));
+
+      return { prev };
     },
-    onError: (error) => {
-      console.error("Error updating todo:", error);
+    onError: (_err, _vars, context) => {
+      queryClient.setQueryData(["todos"], context?.prev);
     },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["todos"] }),
   });
 }

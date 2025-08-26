@@ -1,3 +1,4 @@
+import { Todo } from "@/pages/todo";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const delteTodo = async (id: number) => {
@@ -14,6 +15,21 @@ export const useDeleteTodo = () => {
 
   return useMutation({
     mutationFn: delteTodo,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["todos"] })
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: ["todos"] });
+      const prev = queryClient.getQueryData(["todos"]);
+
+      queryClient.setQueryData(["todos"], (old: any) => ({
+        ...old,
+        todos: old.todos.filter((t: Todo) => t.id !== id),
+      }));
+
+      return { prev };
+    },
+
+    onError: (_err, _vars, context) => {
+      queryClient.setQueryData(["todos"], context?.prev);
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["todos"] }),
   })
 }

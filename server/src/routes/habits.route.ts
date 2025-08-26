@@ -43,7 +43,6 @@ habits.post("/:id/complete", (c) => {
   const existing = db
     .query("SELECT id FROM habit_logs WHERE habit_id = ? AND date = DATE('now')")
     .get(id);
-  console.log(existing);
 
   if (existing) {
     // If already completed today → delete it (uncheck)

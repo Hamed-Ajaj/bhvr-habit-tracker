@@ -6,7 +6,7 @@ import { useDeleteTodo } from "@/hooks/useDeleteTodo";
 import { useUpdateTodo } from "@/hooks/useUpdateTodo";
 import { useEditTitle } from "@/hooks/useEditTitle";
 
-interface Todo {
+export interface Todo {
   id: number;
   title: string;
   completed: boolean;
@@ -141,7 +141,7 @@ const TodoList: React.FC = () => {
         {isFetching ? (
           <h1>Loading...</h1>
         ) : (
-          filteredTodos?.map((todo) => (
+          filteredTodos?.map((todo: Todo) => (
             <div
               key={todo.id}
               className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200"

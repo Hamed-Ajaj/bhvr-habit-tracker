@@ -27,12 +27,12 @@ app.use(
 // Group all API routes under /api
 const api = new Hono();
 api.on(["POST", "GET"], "/auth/**", (c) => auth.handler(c.req.raw));
+// api.use('*', async (c, next) => {
+//   console.log('Request headers:', Object.fromEntries(c.req.raw.headers.entries()))
+//   console.log('Cookie header:', c.req.header('cookie'))
+//   await next()
+// })
 
-api.use('*', async (c, next) => {
-  console.log('Request headers:', Object.fromEntries(c.req.raw.headers.entries()))
-  console.log('Cookie header:', c.req.header('cookie'))
-  await next()
-})
 api.use(authMiddleware).route("/todos", todos);
 api.use(authMiddleware).route("/habits", habits);
 
