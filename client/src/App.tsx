@@ -11,6 +11,7 @@ import SignUp from './pages/auth/auth-page';
 import { useEffect } from 'react';
 import Analytics from './pages/analytics.tsx';
 import Loader from './components/ui/loader.tsx';
+import ChallengesPage from './pages/challenges.tsx';
 
 function SidebarLayout() {
   const { data: session, isPending } = useSession()
@@ -57,6 +58,7 @@ function App() {
         <Route path="/focus" element={<FocusPage />} />
         <Route path="/todos" element={<TodoList />} />
         <Route path="/analytics" element={<Analytics />} />
+        <Route path="/challenges" element={<ChallengesPage />} />
       </Route>
 
     </Routes>

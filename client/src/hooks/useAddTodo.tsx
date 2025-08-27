@@ -1,15 +1,6 @@
 // hooks/useAddTodo.ts
+import { addTodo } from "@/api/todos";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-const addTodo = async (title: string) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/todos`, {
-    method: 'POST',
-    credentials: "include",
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title: title.trim(), completed: 0 }),
-  });
-  return response.json();
-};
 
 export const useAddTodo = () => {
   const queryClient = useQueryClient();

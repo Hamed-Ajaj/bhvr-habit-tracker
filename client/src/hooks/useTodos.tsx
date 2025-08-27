@@ -1,3 +1,4 @@
+import { fetchTodos } from "@/api/todos";
 import { useQuery } from "@tanstack/react-query";
 
 interface TodoItem {
@@ -10,13 +11,6 @@ interface Todo {
   todos: TodoItem[];
 }
 
-const fetchTodos = async (): Promise<Todo> => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/todos`, {
-    credentials: "include",
-  })
-  const data = await response.json();
-  return data;
-}
 
 
 export const useTodos = () => {

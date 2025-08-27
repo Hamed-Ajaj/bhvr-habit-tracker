@@ -19,6 +19,7 @@ const TodoList: React.FC = () => {
   const [editText, setEditText] = useState("");
 
   const { todos: tanstackTodos, isLoading } = useTodos();
+  console.log("Fetched todos:", tanstackTodos);
   const tanstackAddTodo = useAddTodo();
   const tanstackDeleteTodo = useDeleteTodo();
   const tanstackUpdateTodo = useUpdateTodo();
@@ -28,7 +29,8 @@ const TodoList: React.FC = () => {
     if (!newTodo.trim()) return;
     try {
       setNewTodo("");
-      await tanstackAddTodo.mutateAsync(newTodo.trim());
+      const addedTodo = await tanstackAddTodo.mutateAsync(newTodo.trim());
+      console.log("Added todo:", addedTodo);
     } catch {
       /* handled in hooks */
       console.log("error adding todo");
@@ -45,7 +47,7 @@ const TodoList: React.FC = () => {
 
   const deleteTodo = async (id: number) => {
     try {
-      await tanstackDeleteTodo.mutateAsync(id);
+      tanstackDeleteTodo.mutate(id);
     } catch {
       /* handled in hooks */
     }
@@ -57,8 +59,7 @@ const TodoList: React.FC = () => {
   };
 
   const saveEdit = async () => {
-    const todo = tanstackTodos?.todos?.find((t) => t.id === editingId);
-    if (!editText.trim() || !editingId || !todo) return;
+    if (!editText.trim() || !editingId) return;
 
     try {
 
@@ -68,7 +69,6 @@ const TodoList: React.FC = () => {
       await tanstackEditTitle.mutateAsync({
         id: editingId,
         title: editText.trim(),
-        completed: todo.completed,
       });
 
     } finally {

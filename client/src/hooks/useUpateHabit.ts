@@ -22,6 +22,7 @@ export const useUpdateHabit = () => {
     mutationFn: updateHabit,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['habits'] });
+      queryClient.invalidateQueries({ queryKey: ['completed-habits-count'] });
     }
   })
 }

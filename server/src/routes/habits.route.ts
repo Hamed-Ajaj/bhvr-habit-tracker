@@ -35,6 +35,21 @@ WHERE h.user_id = ?;`)
   return c.json({ success: true, habits: habits })
 })
 
+habits.use(authMiddleware).get("/completed/count", (c) => {
+  const user = c.get("user");
+  const userId = user?.id;
+
+  const result = db.query(`
+    SELECT COUNT(*) as count
+    FROM habits h
+    JOIN habit_logs hl
+      ON h.id = hl.habit_id
+    WHERE h.user_id = ?
+      AND hl.date = DATE('now');
+  `).get(userId) as { success: Boolean; count: number };
+
+  return c.json({ success: true, count: result?.count ?? 0 });
+});
 
 // POST /habits/:id/complete
 habits.post("/:id/complete", (c) => {

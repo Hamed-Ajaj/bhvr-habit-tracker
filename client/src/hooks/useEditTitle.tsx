@@ -1,15 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const editTitle = async ({ id, title, completed }: { id: number, title: string, completed: boolean }) => {
+const editTitle = async ({ id, title }: { id: number, title: string }) => {
 
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}/edit`, {
     method: 'PUT',
     credentials: "include",
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      completed: completed,
       title: title, // Use the passed title
     }),
   });

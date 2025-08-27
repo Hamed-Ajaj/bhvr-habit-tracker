@@ -1,46 +1,63 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import Loader from "@/components/ui/loader";
-import { useCompletedTodos } from "@/hooks/useCompletedTodos";
+import { lazy, Suspense } from "react";
+import CardSkeleton from "@/components/ui/card-skeleton";
+
+const CompletedTodosCard = lazy(() => import("@/components/ui/completed-todos-card"));
+const CompletedHabitsCard = lazy(() => import("@/components/ui/completed-habits-card"));
+const CompletedFocusCard = lazy(() => import("@/components/ui/completed-focus-card"));
 
 const Analytics = () => {
-  const { completedTodos, isLoading } = useCompletedTodos();
 
-  if (isLoading) return <Loader />;
-  console.log(completedTodos);
+  const focusSessionsToday = 5; // Replace with actual data later
+
   return (
+    <main className="min-h-screen bg-gradient-to-br  p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">Analytics Dashboard</h1>
+          <p className="text-slate-600">Track your daily progress and achievements</p>
+        </div>
 
-    // TODO:  we need three cards one for completed todos, one for habits and one for focus sessions only for today
-    <main className="max-w-6xl mx-auto p-6 bg-white">
-      {/* <h1>completedTodos : {completedTodos?.completed?.length}</h1> */}
-      {/*cards section*/}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {/* Cards section */}
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Completed Todos Card */}
+          <Suspense fallback={<CardSkeleton />}>
+            <CompletedTodosCard />
+          </Suspense>
+          {/* Habits Card */}
+          <Suspense fallback={<CardSkeleton />}>
+            <CompletedHabitsCard />
+          </Suspense>
+          {/* Focus Sessions Card */}
+          <Suspense fallback={<CardSkeleton />}>
+            <CompletedFocusCard />
+          </Suspense>
+        </section>
 
-        <Card className="w-full max-w-xs rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg font-semibold text-slate-800">
-              Today’s Completed Todos
-            </CardTitle>
-            <CardDescription className="mt-1 text-xs text-slate-500">
-              {new Date().toLocaleDateString(undefined, {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="flex items-center justify-center p-4">
-            <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md">
-              <span className="text-4xl font-bold text-white drop-shadow">
-                {completedTodos?.completed?.length ?? 0}
-              </span>
+        {/* Additional stats section - can be expanded later */}
+        <section className="bg-white rounded-xl shadow-md p-6">
+          <h2 className="text-xl font-semibold text-slate-800 mb-4">Weekly Overview</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center p-4 bg-slate-50 rounded-lg">
+              <div className="text-2xl font-bold text-blue-600 mb-1">
+                {/* TODO: fetch weekly todos count */}
+                25
+              </div>
+              <p className="text-sm text-slate-600">Todos This Week</p>
             </div>
-          </CardContent>
-        </Card>
-        <Card>habits card</Card>
-        <Card>focus card</Card>
-      </section>
+            <div className="text-center p-4 bg-slate-50 rounded-lg">
+              <div className="text-2xl font-bold text-green-600 mb-1">21</div>
+              <p className="text-sm text-slate-600">Habits This Week</p>
+            </div>
+            <div className="text-center p-4 bg-slate-50 rounded-lg">
+              <div className="text-2xl font-bold text-purple-600 mb-1">
+                {focusSessionsToday * 7}
+              </div>
+              <p className="text-sm text-slate-600">Focus Sessions This Week</p>
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
   )
 }

@@ -39,15 +39,21 @@ export const fetchHabits = async (): Promise<Habit> => {
   return data;
 }
 
-export const updateHabit = async ({ habitId, completed }: { habitId: string, completed: boolean }) => {
+export const updateHabit = async ({ habitId }: { habitId: string }) => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/habits/${habitId}/complete`, {
     method: 'POST',
     credentials: "include",
     headers: {
       "content-type": "application/json",
     },
-    // body: JSON.stringify({
-    //   completed: completed ? 1 : 0
-    // })
   })
+  return response.json();
+}
+
+export const fetchCompletedHabits = async () => {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/habits/completed/count`, {
+    credentials: "include",
+  })
+  const data = await response.json();
+  return data;
 }
