@@ -7,18 +7,19 @@ import HabitsPage from './pages/habits.tsx';
 import FocusPage from './pages/focus.tsx';
 import { useSession } from './lib/auth-client.ts';
 import SignIn from './pages/auth/signIn.tsx';
-import SignUp from './pages/auth/auth-page';
+import SignUp from './pages/auth/sign-up.tsx';
 import { useEffect } from 'react';
 import Analytics from './pages/analytics.tsx';
 import Loader from './components/ui/loader.tsx';
 import ChallengesPage from './pages/challenges.tsx';
+import SettingsPage from './pages/settings.tsx';
 
 function SidebarLayout() {
   const { data: session, isPending } = useSession()
   const navigate = useNavigate();
-  // if (isPending) {
-  //   return <Loader />
-  // }
+  if (isPending) {
+    return <Loader />
+  }
   useEffect(() => {
     if (!session && !isPending) {
       navigate('/sign-in')
@@ -59,6 +60,7 @@ function App() {
         <Route path="/todos" element={<TodoList />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/challenges" element={<ChallengesPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Route>
 
     </Routes>

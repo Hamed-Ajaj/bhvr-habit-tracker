@@ -1,6 +1,6 @@
 
 import { signIn, useSession } from '@/lib/auth-client'
-import { CircleX, KeyRound, Mail, User, Loader2 } from 'lucide-react'
+import { CircleX, KeyRound, Mail, Loader2 } from 'lucide-react'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -23,7 +23,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 // Zod validation schema
 const signUpSchema = z.object({
   email: z
-    .string()
     .email('Please enter a valid email address'),
   password: z
     .string()
@@ -35,6 +34,7 @@ type SignUpForm = z.infer<typeof signUpSchema>
 export default function SignIn() {
   const navigate = useNavigate()
   const { data: session, isPending } = useSession()
+
 
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),

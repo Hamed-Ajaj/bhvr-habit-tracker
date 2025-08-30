@@ -155,8 +155,8 @@ export function AppSidebar() {
           <DropdownMenuTrigger asChild>
             <button className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 transition-colors">
               <Avatar className="w-8 h-8">
-                <AvatarImage src="/placeholder-avatar.jpg" alt={userName} />
-                <AvatarFallback className="bg-blue-600 text-white text-sm font-medium">
+                <AvatarImage src={session?.user?.image} className="object-cover" alt={userName} />
+                <AvatarFallback className="bg-blue-600  text-white text-sm font-medium">
                   {userName.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -168,12 +168,6 @@ export function AppSidebar() {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuItem asChild>
-              <Link to="/profile" className="flex items-center space-x-2">
-                <User className="w-4 h-4" />
-                <span>Profile</span>
-              </Link>
-            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link to="/settings" className="flex items-center space-x-2">
                 <Settings className="w-4 h-4" />

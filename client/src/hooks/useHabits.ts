@@ -16,6 +16,6 @@ interface Habit {
 
 
 export const useHabits = () => {
-  const { data: habits, isFetching, isError, error, isLoading } = useQuery({ queryKey: ['habits'], queryFn: fetchHabits, staleTime: 1000 * 60 * 5 });
+  const { data: habits, isFetching, isError, error, isLoading } = useQuery({ queryKey: ['habits'], queryFn: fetchHabits, staleTime: 1000 * 60 });
   return { habits, isFetching, isError, error, isLoading }
 }

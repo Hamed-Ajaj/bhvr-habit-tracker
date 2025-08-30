@@ -2,8 +2,7 @@ import { useHabits } from "@/hooks/useHabits";
 import AddHabitDialog from "@/components/ui/add-habit-dialog";
 import HabitItem from "@/components/ui/habit-item";
 const HabitsPage = () => {
-  const { habits, isFetching, isLoading
-  } = useHabits();
+  const { habits, isFetching, isLoading} = useHabits();
 
   if (isLoading)
     return (

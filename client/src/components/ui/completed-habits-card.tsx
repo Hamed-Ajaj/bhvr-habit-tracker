@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card"
 import { formatDate } from "@/lib/utils";
 import { fetchCompletedHabits } from "@/api/habits";
+import CardSkeleton from "./card-skeleton";
 
 const CompletedHabitsCard = () => {
 
@@ -11,6 +12,9 @@ const CompletedHabitsCard = () => {
     staleTime: Infinity,
   });
 
+  if (isLoadingHabits) {
+    return <CardSkeleton />; // show skeleton until data is ready
+  }
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 py-0 border-0 shadow-md hover:scale-105">
       <CardHeader className="py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-t-lg">

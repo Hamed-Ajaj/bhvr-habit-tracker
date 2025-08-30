@@ -28,6 +28,7 @@ db.run(`
   )
 `);
 
+// habit logs table
 db.run(`
 CREATE TABLE IF NOT EXISTS habit_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,6 +36,14 @@ CREATE TABLE IF NOT EXISTS habit_logs (
   date TEXT NOT NULL DEFAULT CURRENT_DATE,
   completed INTEGER DEFAULT 1,
   FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE
+);
+`)
+// focus sessions table
+db.run(`
+CREATE TABLE IF NOT EXISTS sessions (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+duration INTEGER NOT NULL,
+date TEXT NOT NULL DEFAULT CURRENT_DATE,
 );
 `)
 

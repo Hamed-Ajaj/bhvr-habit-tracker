@@ -1,7 +1,5 @@
 const ChallengesPage = () => {
-  return (
-    <div>monthly challenges</div>
-  )
-}
+  return <div>monthly challenges</div>;
+};
 
 export default ChallengesPage;

@@ -14,7 +14,9 @@ interface Todo {
 
 
 export const useTodos = () => {
-  const { data: todos, isFetching, isLoading, isError, error } = useQuery({ queryKey: ['todos'], queryFn: fetchTodos, staleTime: Infinity });
+  const { data: todos, isFetching, isLoading, isError, error } = useQuery({
+    queryKey: ['todos'], queryFn: fetchTodos, staleTime: 1000 * 60,
+  }) // 1 minutes
 
   return { todos, isFetching, isError, isLoading, error };
 }

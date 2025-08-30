@@ -1,9 +1,13 @@
 import { useCompletedTodos } from "@/hooks/useCompletedTodos";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card";
 import { formatDate } from "@/lib/utils";
+import CardSkeleton from "./card-skeleton";
 
 const CompletedTodosCard = () => {
   const { completedTodos, isLoading } = useCompletedTodos();
+  if (isLoading) {
+    return <CardSkeleton />; // show skeleton until data is ready
+  }
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 py-0 border-0 shadow-md hover:scale-105">
       <CardHeader className="py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-t-lg">
