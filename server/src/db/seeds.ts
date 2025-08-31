@@ -23,5 +23,12 @@ db.run(`
 
 `);
 
+
+// focus sessions seed
+
+db.run(`
+INSERT OR IGNORE INTO sessions ( duration) VALUES ( 50 ),(30),(25),(15);
+`)
+
 console.log("✅ Seeded successfully");
 
