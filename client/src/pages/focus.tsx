@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Play, Pause, RotateCcw } from 'lucide-react';
+import { Play, Pause, RotateCcw, Square } from 'lucide-react';
 
 const FocusPage = () => {
   const [minutes, setMinutes] = useState(25);
@@ -43,6 +43,20 @@ const FocusPage = () => {
     setIsActive(false);
     setIsCompleted(false);
   };
+
+  const handleRecord = async () => {
+    const focusedTime = 25 * 60 - (minutes * 60 + seconds);
+
+    setIsActive(!isActive);
+    resetTimer();
+    const newSession = await fetch(`${import.meta.env.VITE_API_URL}/focus`, {
+      method: 'POST',
+      credentials: "include",
+
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ duration: focusedTime }),
+    })
+  }
 
   const formatTime = (mins, secs) => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
@@ -117,6 +131,15 @@ const FocusPage = () => {
             >
               <RotateCcw size={20} />
             </button>
+
+            {isActive && (
+              <button
+                onClick={handleRecord}
+                className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-500 hover:bg-gray-600 text-white transition-all duration-200 hover:scale-105 active:scale-95 shadow-lg"
+              >
+                <Square size={20} />
+              </button>
+            )}
           </div>
         </div>
       </div>
