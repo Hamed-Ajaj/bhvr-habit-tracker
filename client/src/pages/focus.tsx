@@ -49,13 +49,19 @@ const FocusPage = () => {
 
     setIsActive(!isActive);
     resetTimer();
-    const newSession = await fetch(`${import.meta.env.VITE_API_URL}/focus`, {
-      method: 'POST',
-      credentials: "include",
 
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ duration: focusedTime }),
-    })
+    try {
+      const newSession = await fetch(`${import.meta.env.VITE_API_URL}/focus`, {
+        method: 'POST',
+        credentials: "include",
+
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ duration: focusedTime }),
+      })
+    }
+    catch (error) {
+      console.error("Error recording focus session:", error);
+    }
   }
 
   const formatTime = (mins, secs) => {

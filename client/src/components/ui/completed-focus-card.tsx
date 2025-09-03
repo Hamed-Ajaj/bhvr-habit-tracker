@@ -6,8 +6,8 @@ import { fetchFocusSessionsToday } from "@/api/focus-sessions";
 const CompletedFocusCard = () => {
 
   const { data: focusSessionsToday } = useQuery({ queryKey: ['focusSessionsToday'], queryFn: fetchFocusSessionsToday });
-
-  const totalFocusTime = 125; // Total minutes, replace with actual data later
+  console.log(focusSessionsToday);
+  const totalFocusTime = (focusSessionsToday?.focusSessions.reduce((acc: number, current: { id: number; duration: number; data: string }) => acc + current?.duration, 0) / 60).toFixed(0); // Total minutes, replace with actual data later console.log(totalFocusTime);
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 py-0 border-0 shadow-md hover:scale-105">

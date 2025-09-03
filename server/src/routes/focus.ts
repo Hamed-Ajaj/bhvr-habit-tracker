@@ -11,7 +11,7 @@ focus.get("/", (c) => {
 focus.post("/", async (c) => {
   const { duration } = await c.req.json();
   const addedSession = db.run(`
-INSERT INTO sessions duration=?;
+INSERT INTO sessions ( duration ) VALUES ( ? );
 `, [duration]);
   return c.json({
     success: true, addedSession

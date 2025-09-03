@@ -45,25 +45,25 @@ const mainItems = [
     url: "/habits",
     icon: Target,
   },
-]
-
-// Analytics & extras
-const analyticsItems = [
   {
     title: "Analytics",
     url: "/analytics",
     icon: BarChart3,
   },
-  {
-    title: "Challenges",
-    url: "/challenges",
-    icon: Trophy,
-  },
 ]
+
+// TODO: for later 
+// Analytics & extras
+// const analyticsItems = [
+//   {
+//     title: "Challenges",
+//     url: "/challenges",
+//     icon: Trophy,
+//   },
+// ]
 
 export function AppSidebar() {
   const location = useLocation()
-  // const userName = "Hamed" // You can get this from your auth context
   const { data: session } = useSession();
   const userName = session?.user?.name || "User";
   return (
@@ -116,37 +116,37 @@ export function AppSidebar() {
         </SidebarGroup>
 
         {/* Analytics Section */}
-        <SidebarGroup className="mt-8">
-          <SidebarGroupLabel className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
-            Analytics
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu className="space-y-1">
-              {analyticsItems.map((item) => {
-                const isActive = location.pathname === item.url
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      className={`
-                        w-full rounded-lg transition-all duration-200 hover:bg-slate-100
-                        ${isActive
-                          ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-500 font-medium'
-                          : 'text-slate-700 hover:text-slate-900'
-                        }
-                      `}
-                    >
-                      <Link to={item.url} className="flex items-center space-x-3 px-3 py-2.5">
-                        <item.icon className={`w-5 h-5 ${isActive ? 'text-blue-600' : 'text-slate-500'}`} />
-                        <span className="text-sm">{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {/* <SidebarGroup className="mt-8"> */}
+        {/*   <SidebarGroupLabel className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3"> */}
+        {/*     Analytics */}
+        {/*   </SidebarGroupLabel> */}
+        {/*   <SidebarGroupContent> */}
+        {/*     <SidebarMenu className="space-y-1"> */}
+        {/*       {analyticsItems.map((item) => { */}
+        {/*         const isActive = location.pathname === item.url */}
+        {/*         return ( */}
+        {/*           <SidebarMenuItem key={item.title}> */}
+        {/*             <SidebarMenuButton */}
+        {/*               asChild */}
+        {/*               className={` */}
+        {/*                 w-full rounded-lg transition-all duration-200 hover:bg-slate-100 */}
+        {/*                 ${isActive */}
+        {/*                   ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-500 font-medium' */}
+        {/*                   : 'text-slate-700 hover:text-slate-900' */}
+        {/*                 } */}
+        {/*               `} */}
+        {/*             > */}
+        {/*               <Link to={item.url} className="flex items-center space-x-3 px-3 py-2.5"> */}
+        {/*                 <item.icon className={`w-5 h-5 ${isActive ? 'text-blue-600' : 'text-slate-500'}`} /> */}
+        {/*                 <span className="text-sm">{item.title}</span> */}
+        {/*               </Link> */}
+        {/*             </SidebarMenuButton> */}
+        {/*           </SidebarMenuItem> */}
+        {/*         ) */}
+        {/*       })} */}
+        {/*     </SidebarMenu> */}
+        {/*   </SidebarGroupContent> */}
+        {/* </SidebarGroup> */}
       </SidebarContent>
 
       {/* Footer with User Info */}
