@@ -6,13 +6,13 @@ import CardSkeleton from "./card-skeleton";
 
 const CompletedHabitsCard = () => {
 
-  const { data: completedHabits, isLoading: isLoadingHabits } = useQuery({
+  const { data: completedHabits, isLoading: isLoadingHabits, isFetching } = useQuery({
     queryKey: ['completed-habits-count'],
     queryFn: fetchCompletedHabits,
     staleTime: Infinity,
   });
 
-  if (isLoadingHabits) {
+  if (isFetching) {
     return <CardSkeleton />; // show skeleton until data is ready
   }
   return (

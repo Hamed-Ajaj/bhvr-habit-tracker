@@ -58,20 +58,21 @@ const FocusPage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ duration: focusedTime }),
       })
+      return newSession;
     }
     catch (error) {
       console.error("Error recording focus session:", error);
     }
   }
 
-  const formatTime = (mins, secs) => {
+  const formatTime = (mins: number, secs: number) => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   const progress = ((25 * 60 - (minutes * 60 + seconds)) / (25 * 60)) * 100;
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen w-full  p-8">
+    <main className="flex flex-col items-center justify-center min-h-screen w-full">
       <div className="relative w-80 h-80 flex justify-center items-center flex-col rounded-full bg-white shadow-2xl border-8 border-green-200 transition-all duration-300 hover:shadow-3xl">
         {/* Progress Ring */}
         <svg className="absolute top-0 left-0 w-full h-full transform -rotate-90" viewBox="0 0 100 100">

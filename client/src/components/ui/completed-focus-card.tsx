@@ -1,13 +1,16 @@
-import { formatDate } from "@/lib/utils"
+import { calculateFocusTime, formatDate } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card"
 import { useQuery } from "@tanstack/react-query";
 import { fetchFocusSessionsToday } from "@/api/focus-sessions";
+import CardSkeleton from "./card-skeleton";
 
 const CompletedFocusCard = () => {
 
-  const { data: focusSessionsToday } = useQuery({ queryKey: ['focusSessionsToday'], queryFn: fetchFocusSessionsToday });
-  console.log(focusSessionsToday);
-  const totalFocusTime = (focusSessionsToday?.focusSessions.reduce((acc: number, current: { id: number; duration: number; data: string }) => acc + current?.duration, 0) / 60).toFixed(0); // Total minutes, replace with actual data later console.log(totalFocusTime);
+  const { data: focusSessionsToday, isFetching, isLoading } = useQuery({ queryKey: ['focusSessionsToday'], queryFn: fetchFocusSessionsToday });
+
+  if (isFetching || isLoading) {
+    return <CardSkeleton />;
+  }
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 py-0 border-0 shadow-md hover:scale-105">
@@ -30,7 +33,7 @@ const CompletedFocusCard = () => {
         </div>
         <div className="text-center">
           <p className="text-sm text-slate-600 mb-1">
-            {totalFocusTime} minutes focused
+            {calculateFocusTime(focusSessionsToday?.focusSessions)} minutes focused
           </p>
           <p className="text-xs text-slate-500">
             Keep up the concentration!

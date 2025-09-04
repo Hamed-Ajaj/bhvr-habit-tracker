@@ -4,8 +4,8 @@ import { formatDate } from "@/lib/utils";
 import CardSkeleton from "./card-skeleton";
 
 const CompletedTodosCard = () => {
-  const { completedTodos, isLoading } = useCompletedTodos();
-  if (isLoading) {
+  const { completedTodos, isLoading, isFetching } = useCompletedTodos();
+  if (isLoading || isFetching) {
     return <CardSkeleton />; // show skeleton until data is ready
   }
   return (

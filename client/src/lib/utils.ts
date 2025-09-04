@@ -13,3 +13,8 @@ export const formatDate = () => {
     day: 'numeric',
   });
 };
+export const calculateFocusTime = (focusSessions: { id: number; duration: number; data: string }[]) => {
+  const totalFocusTime = (focusSessions.reduce((acc: number, current: { id: number; duration: number; data: string }) => acc + current?.duration, 0) / 60).toFixed(0);
+  return totalFocusTime;
+}
+

@@ -1,44 +1,22 @@
 import { useHabits } from "@/hooks/useHabits";
 import AddHabitDialog from "@/components/ui/add-habit-dialog";
 import HabitItem from "@/components/ui/habit-item";
+import Loader from "@/components/ui/loader";
 const HabitsPage = () => {
-  const { habits, isFetching, isLoading} = useHabits();
+  const { habits, isLoading } = useHabits();
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="flex items-center space-x-2 text-blue-600">
-          <svg
-            className="animate-spin h-6 w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-            />
-          </svg>
-          <span className="font-medium">Loading...</span>
-        </div>
-      </div>
+      <Loader />
     );
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl md:mx-auto md:p-6">
       {/* Page Header */}
       <div className="mb-8 flex justify-between items-center">
-        <div><h1 className="text-3xl font-bold text-gray-900">Habits</h1>
-          <p className="text-gray-600">Track your daily and weekly habits</p></div>
+        <div>
+          <h1 className="text-lg md:text-3xl font-bold text-gray-900">Habits</h1>
+          <p className="text-gray-600 text-sm md:text-lg max-w-[200px]">Track your daily and weekly habits</p></div>
         <div>
           <AddHabitDialog />
         </div>

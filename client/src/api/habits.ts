@@ -1,4 +1,16 @@
-import { Habit } from "@/components/ui/habit-item";
+
+
+export interface HabitRes {
+  success: boolean;
+  habits: {
+    id: number;
+    name: string;
+    completed: boolean;
+    startDate: string;
+    description: string;
+    frequency: string;
+  }[]
+}
 
 export const addHabit = async ({ title, description, frequency }: { title: string, description: string, frequency: string }) => {
 
@@ -30,8 +42,7 @@ export const deleteHabit = async (habitId: string) => {
   return response.json();
 }
 
-
-export const fetchHabits = async (): Promise<Habit> => {
+export const fetchHabits = async (): Promise<HabitRes> => {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/habits`, {
     credentials: "include"
   });

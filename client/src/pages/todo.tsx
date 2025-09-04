@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Plus, Edit2, Trash2 } from "lucide-react";
+import { Plus, Edit2, Trash2, Check } from "lucide-react";
 import { useTodos } from "@/hooks/useTodos";
 import { useAddTodo } from "@/hooks/useAddTodo";
 import { useDeleteTodo } from "@/hooks/useDeleteTodo";
@@ -19,7 +19,6 @@ const TodoList: React.FC = () => {
   const [editText, setEditText] = useState("");
 
   const { todos: tanstackTodos, isLoading } = useTodos();
-  console.log("Fetched todos:", tanstackTodos);
   const tanstackAddTodo = useAddTodo();
   const tanstackDeleteTodo = useDeleteTodo();
   const tanstackUpdateTodo = useUpdateTodo();
@@ -85,29 +84,28 @@ const TodoList: React.FC = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white">
+    <div className="flex flex-col max-w-2xl mx-auto p-2 md:p-6 bg-white">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Todo List</h1>
-        <p className="text-gray-600">Plan your day and track your tasks</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Todo List</h1>
+        <p className="text-sm md:text-base text-gray-600">Plan your day and track your tasks</p>
       </div>
 
       {/* Add Todo */}
-      <div className="flex gap-3 mb-6">
+      <div className="flex max-w-full gap-1 md:gap-3 mb-6">
         <input
           type="text"
           value={newTodo}
           onChange={(e) => setNewTodo(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && addTodo()}
+          onKeyDown={(e) => e.key === "Enter" && addTodo()}
           placeholder="Add a new task..."
           className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
           onClick={addTodo}
           disabled={tanstackAddTodo.isPending}
-          className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60"
+          className="items-center justify-center px-3 md:px-4 py-2 md:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60"
         >
-          {/* {tanstackAddTodo.isPending ? "Adding…" : "Add"} */}
           <Plus />
         </button>
       </div>
@@ -117,7 +115,7 @@ const TodoList: React.FC = () => {
         {tanstackTodos?.todos?.map((todo: Todo) => (
           <div
             key={todo.id}
-            className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-200"
+            className="flex items-center gap-2 md:gap-3 p-3 md:p-4 bg-gray-50 rounded-lg border border-gray-200"
           >
             {/* Checkbox */}
             <button
@@ -168,16 +166,17 @@ const TodoList: React.FC = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-2">
+            <div className="flex gap-3 items-center justify-center">
               <button
                 onClick={() => startEdit(todo.id, todo.title)}
-                className="p-2 text-gray-500 hover:text-blue-600 transition-colors"
+                className="text-gray-500 hover:text-blue-600 cursor-pointer transition-colors"
               >
-                <Edit2 size={16} />
+                {editingId === todo.id ? <Check size={16} /> : <Edit2 size={16} />}
+
               </button>
               <button
                 onClick={() => deleteTodo(todo.id)}
-                className="p-2 text-gray-500 hover:text-red-600 transition-colors"
+                className=" text-gray-500 hover:text-red-600 cursor-pointer transition-colors"
               >
                 <Trash2 size={16} />
               </button>
