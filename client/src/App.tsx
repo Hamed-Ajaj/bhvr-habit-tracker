@@ -13,6 +13,8 @@ import Analytics from './pages/analytics.tsx';
 import Loader from './components/ui/loader.tsx';
 import ChallengesPage from './pages/challenges.tsx';
 import SettingsPage from './pages/settings.tsx';
+import CustomChallenges from './pages/custom-challenges.tsx';
+import MonthlyChallenges from './pages/monthly-challenges.tsx';
 
 function SidebarLayout() {
   const { data: session, isPending } = useSession()
@@ -59,7 +61,8 @@ function App() {
         <Route path="/focus" element={<FocusPage />} />
         <Route path="/todos" element={<TodoList />} />
         <Route path="/analytics" element={<Analytics />} />
-        <Route path="/challenges" element={<ChallengesPage />} />
+        <Route path="/custom-challenges" element={<CustomChallenges />} />
+        <Route path="/monthly-challenges" element={<MonthlyChallenges />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
 

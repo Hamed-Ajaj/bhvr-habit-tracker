@@ -6,7 +6,7 @@ import CardSkeleton from "./card-skeleton";
 
 const CompletedFocusCard = () => {
 
-  const { data: focusSessionsToday, isFetching, isLoading } = useQuery({ queryKey: ['focusSessionsToday'], queryFn: fetchFocusSessionsToday });
+  const { data: focusSessionsToday, isFetching, isLoading } = useQuery({ queryKey: ['focusSessionsToday'], queryFn: fetchFocusSessionsToday, staleTime: Infinity });
 
   if (isFetching || isLoading) {
     return <CardSkeleton />;

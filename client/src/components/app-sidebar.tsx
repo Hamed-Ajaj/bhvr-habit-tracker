@@ -22,11 +22,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarFooter,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import { Link, useLocation } from "react-router-dom"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { signOut, useSession } from "@/lib/auth-client"
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./ui/collapsible"
 
 // Main navigation items
 const mainItems = [
@@ -111,6 +114,60 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 )
               })}
+              <SidebarMenuItem>
+
+                <Collapsible defaultOpen={false} className="group/collapsible">
+                  <SidebarMenuItem>
+                    {/* Trigger */}
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton
+                        className={`
+w-full rounded-lg transition-all duration-200 hover:bg-slate-100
+flex items-center justify-between px-3 py-2.5
+text-slate-700 hover:text-slate-900
+`}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <Trophy className="w-5 h-5 text-slate-500" />
+                          <span className="text-sm">Challenges</span>
+                        </div>
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+
+                    {/* Content */}
+                    <CollapsibleContent>
+                      <SidebarMenuSub className="mt-1 space-y-1 pl-8">
+                        <SidebarMenuSubItem>
+                          <Link
+                            to="custom-challenges"
+                            className={`
+block px-2 py-1.5 text-sm rounded-md transition-colors
+${location.pathname === "/challenges/custom"
+                                ? "bg-blue-50 text-blue-700 font-medium"
+                                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                              }
+`}
+                          >Custom</Link>
+                        </SidebarMenuSubItem>
+                        <SidebarMenuSubItem>
+                          <Link
+                            to="monthly-challenges"
+                            className={`
+block px-2 py-1.5 text-sm rounded-md transition-colors
+${location.pathname === "monthly-challenges"
+                                ? "bg-blue-50 text-blue-700 font-medium"
+                                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                              }
+`}
+                          >
+                            Monthly
+                          </Link>
+                        </SidebarMenuSubItem>
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
