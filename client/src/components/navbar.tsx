@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useSession, signOut } from '@/lib/auth-client'
 import { Button } from "./ui/button";
+import { Target } from "lucide-react";
 
 const Navbar = () => {
 
@@ -9,7 +10,12 @@ const Navbar = () => {
   return (
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">HabitTracker</h1>
+        <Link to={'/'} className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <Target className="w-5 h-5 text-white" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">HabitFlow</h1>
+        </Link>
         {session && !isPending ? (
 
           <div className="space-x-4 flex items-center">

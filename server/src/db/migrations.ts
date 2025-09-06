@@ -48,4 +48,16 @@ date TEXT NOT NULL DEFAULT CURRENT_DATE
 );
 `)
 
+
+// challenges table
+db.run(`
+CREATE TABLE IF NOT EXISTS challenges (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT NOT NULL,
+description TEXT,
+month TEXT NOT NULL,
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+  `)
+
 console.log("✅ Tables created successfully");

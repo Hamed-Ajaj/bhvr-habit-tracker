@@ -23,7 +23,7 @@ export default function LandingPage() {
           with streaks and insights. Start building the life you want today.
         </p>
         <Link
-          to="/auth"
+          to="/sign-up"
           className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 inline-block"
         >
           Start Tracking Free
@@ -67,7 +67,7 @@ export default function LandingPage() {
             Join thousands of people building better lives, one habit at a time.
           </p>
           <Link
-            to="/auth"
+            to="/sign-up"
             className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 inline-block"
           >
             Get Started Now
@@ -78,7 +78,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <p>&copy; 2025 HabitTracker. Built with React, Hono, and Better-Auth.</p>
+          <p>&copy; 2025 HabitFlow. Built with React, Hono, and Better-Auth.</p>
         </div>
       </footer>
     </div>

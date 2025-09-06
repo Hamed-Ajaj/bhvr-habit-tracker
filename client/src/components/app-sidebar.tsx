@@ -137,30 +137,30 @@ text-slate-700 hover:text-slate-900
                     {/* Content */}
                     <CollapsibleContent>
                       <SidebarMenuSub className="mt-1 space-y-1 pl-8">
-                        <SidebarMenuSubItem>
-                          <Link
-                            to="custom-challenges"
-                            className={`
-block px-2 py-1.5 text-sm rounded-md transition-colors
-${location.pathname === "/challenges/custom"
-                                ? "bg-blue-50 text-blue-700 font-medium"
-                                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                              }
-`}
-                          >Custom</Link>
-                        </SidebarMenuSubItem>
+                        {/*                         <SidebarMenuSubItem> */}
+                        {/*                           <Link */}
+                        {/*                             to="custom-challenges" */}
+                        {/*                             className={` */}
+                        {/* block px-2 py-1.5 text-sm rounded-md transition-colors */}
+                        {/* ${location.pathname === "/challenges/custom" */}
+                        {/*                                 ? "bg-blue-50 text-blue-700 font-medium" */}
+                        {/*                                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900" */}
+                        {/*                               } */}
+                        {/* `} */}
+                        {/*                           >Custom</Link> */}
+                        {/*                         </SidebarMenuSubItem> */}
                         <SidebarMenuSubItem>
                           <Link
                             to="monthly-challenges"
                             className={`
-block px-2 py-1.5 text-sm rounded-md transition-colors
-${location.pathname === "monthly-challenges"
+block px-2 py-1 text-sm rounded-md transition-colors
+${location.pathname === "/monthly-challenges"
                                 ? "bg-blue-50 text-blue-700 font-medium"
                                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                               }
 `}
                           >
-                            Monthly
+                            {new Date().toLocaleString('default', { month: 'long' })}
                           </Link>
                         </SidebarMenuSubItem>
                       </SidebarMenuSub>
@@ -219,7 +219,7 @@ ${location.pathname === "monthly-challenges"
               </Avatar>
               <div className="flex-1 text-left">
                 <p className="text-sm font-medium text-slate-900">{userName}</p>
-                <p className="text-xs text-slate-500">Software Developer</p>
+                {/* <p className="text-xs text-slate-500">Software Developer</p> */}
               </div>
               <Settings className="w-4 h-4 text-slate-400" />
             </button>
