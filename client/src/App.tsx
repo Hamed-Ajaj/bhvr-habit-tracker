@@ -61,8 +61,8 @@ function App() {
         <Route path="/focus" element={<FocusPage />} />
         <Route path="/todos" element={<TodoList />} />
         <Route path="/analytics" element={<Analytics />} />
-        <Route path="/custom-challenges" element={<CustomChallenges />} />
-        <Route path="/monthly-challenges" element={<MonthlyChallenges />} />
+        {/* <Route path="/custom-challenges" element={<CustomChallenges />} /> */}
+        {/* <Route path="/monthly-challenges" element={<MonthlyChallenges />} /> */}
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
 

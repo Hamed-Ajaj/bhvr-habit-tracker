@@ -70,7 +70,7 @@ export function AppSidebar() {
   const { data: session } = useSession();
   const userName = session?.user?.name || "User";
   return (
-    <Sidebar className="border-r border-slate-200 bg-slate-50">
+    <Sidebar collapsible="offcanvas" variant="floating">
       {/* Header with Logo */}
       <SidebarHeader className="border-b border-slate-200 p-6">
         <Link to="/todos" className="flex items-center space-x-3">
@@ -114,96 +114,51 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 )
               })}
-              <SidebarMenuItem>
-
-                <Collapsible defaultOpen={false} className="group/collapsible">
-                  <SidebarMenuItem>
-                    {/* Trigger */}
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton
-                        className={`
-w-full rounded-lg transition-all duration-200 hover:bg-slate-100
-flex items-center justify-between px-3 py-2.5
-text-slate-700 hover:text-slate-900
-`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <Trophy className="w-5 h-5 text-slate-500" />
-                          <span className="text-sm">Challenges</span>
-                        </div>
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-
-                    {/* Content */}
-                    <CollapsibleContent>
-                      <SidebarMenuSub className="mt-1 space-y-1 pl-8">
-                        {/*                         <SidebarMenuSubItem> */}
-                        {/*                           <Link */}
-                        {/*                             to="custom-challenges" */}
-                        {/*                             className={` */}
-                        {/* block px-2 py-1.5 text-sm rounded-md transition-colors */}
-                        {/* ${location.pathname === "/challenges/custom" */}
-                        {/*                                 ? "bg-blue-50 text-blue-700 font-medium" */}
-                        {/*                                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900" */}
-                        {/*                               } */}
-                        {/* `} */}
-                        {/*                           >Custom</Link> */}
-                        {/*                         </SidebarMenuSubItem> */}
-                        <SidebarMenuSubItem>
-                          <Link
-                            to="monthly-challenges"
-                            className={`
-block px-2 py-1 text-sm rounded-md transition-colors
-${location.pathname === "/monthly-challenges"
-                                ? "bg-blue-50 text-blue-700 font-medium"
-                                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-                              }
-`}
-                          >
-                            {new Date().toLocaleString('default', { month: 'long' })}
-                          </Link>
-                        </SidebarMenuSubItem>
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
-                  </SidebarMenuItem>
-                </Collapsible>
-              </SidebarMenuItem>
+              {/*               <SidebarMenuItem> */}
+              {/**/}
+              {/*                 <Collapsible defaultOpen={false} className="group/collapsible"> */}
+              {/*                   <SidebarMenuItem> */}
+              {/*                     {/* Trigger */}
+              {/*                     <CollapsibleTrigger asChild> */}
+              {/*                       <SidebarMenuButton */}
+              {/*                         className={` */}
+              {/* w-full rounded-lg transition-all duration-200 hover:bg-slate-100 */}
+              {/* flex items-center justify-between px-3 py-2.5 */}
+              {/* text-slate-700 hover:text-slate-900 */}
+              {/* `} */}
+              {/*                       > */}
+              {/*                         <div className="flex items-center space-x-3"> */}
+              {/*                           <Trophy className="w-5 h-5 text-slate-500" /> */}
+              {/*                           <span className="text-sm">Challenges</span> */}
+              {/*                         </div> */}
+              {/*                       </SidebarMenuButton> */}
+              {/*                     </CollapsibleTrigger> */}
+              {/**/}
+              {/*                     {/* Content */}
+              {/*                     <CollapsibleContent> */}
+              {/*                       <SidebarMenuSub className="mt-1 space-y-1 pl-8"> */}
+              {/*                         <SidebarMenuSubItem> */}
+              {/*                           <Link */}
+              {/*                             to="monthly-challenges" */}
+              {/*                             className={` */}
+              {/* block px-2 py-1 text-sm rounded-md transition-colors */}
+              {/* ${location.pathname === "/monthly-challenges" */}
+              {/*                                 ? "bg-blue-50 text-blue-700 font-medium" */}
+              {/*                                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900" */}
+              {/*                               } */}
+              {/* `} */}
+              {/*                           > */}
+              {/*                             {new Date().toLocaleString('default', { month: 'long' })} */}
+              {/*                           </Link> */}
+              {/*                         </SidebarMenuSubItem> */}
+              {/*                       </SidebarMenuSub> */}
+              {/*                     </CollapsibleContent> */}
+              {/*                   </SidebarMenuItem> */}
+              {/*                 </Collapsible> */}
+              {/*               </SidebarMenuItem> */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        {/* Analytics Section */}
-        {/* <SidebarGroup className="mt-8"> */}
-        {/*   <SidebarGroupLabel className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3"> */}
-        {/*     Analytics */}
-        {/*   </SidebarGroupLabel> */}
-        {/*   <SidebarGroupContent> */}
-        {/*     <SidebarMenu className="space-y-1"> */}
-        {/*       {analyticsItems.map((item) => { */}
-        {/*         const isActive = location.pathname === item.url */}
-        {/*         return ( */}
-        {/*           <SidebarMenuItem key={item.title}> */}
-        {/*             <SidebarMenuButton */}
-        {/*               asChild */}
-        {/*               className={` */}
-        {/*                 w-full rounded-lg transition-all duration-200 hover:bg-slate-100 */}
-        {/*                 ${isActive */}
-        {/*                   ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-500 font-medium' */}
-        {/*                   : 'text-slate-700 hover:text-slate-900' */}
-        {/*                 } */}
-        {/*               `} */}
-        {/*             > */}
-        {/*               <Link to={item.url} className="flex items-center space-x-3 px-3 py-2.5"> */}
-        {/*                 <item.icon className={`w-5 h-5 ${isActive ? 'text-blue-600' : 'text-slate-500'}`} /> */}
-        {/*                 <span className="text-sm">{item.title}</span> */}
-        {/*               </Link> */}
-        {/*             </SidebarMenuButton> */}
-        {/*           </SidebarMenuItem> */}
-        {/*         ) */}
-        {/*       })} */}
-        {/*     </SidebarMenu> */}
-        {/*   </SidebarGroupContent> */}
-        {/* </SidebarGroup> */}
       </SidebarContent>
 
       {/* Footer with User Info */}
@@ -238,6 +193,6 @@ ${location.pathname === "/monthly-challenges"
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarFooter>
-    </Sidebar>
+    </Sidebar >
   )
 }
